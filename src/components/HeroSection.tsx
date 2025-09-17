@@ -17,6 +17,10 @@ effective monitoring, regulation, through participatory and innovative approach.
         img: banner2,
         title: "Your Time Matters To Us. Plan Your Visit And Resolve Your Issues.",
         subtitle: "Infrastructure, Housing, and Civic Development",
+        buttons: [
+          { text: "Pay Property Tax Now", bg: "bg-[#FFB300]", hover: "hover:bg-[#e6a500]" },
+          { text: "View User Instructions", bg: "bg-white/80", hover: "hover:bg-white" },
+        ],
       },
     ],
     []
@@ -59,13 +63,27 @@ effective monitoring, regulation, through participatory and innovative approach.
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
 
           {/* Text Content */}
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 mt-5">
             <h2 className="text-white text-xl sm:text-3xl md:text-5xl font-bold drop-shadow-lg">
               {slide.title}
             </h2>
             <p className="text-white text-sm sm:text-lg md:text-2xl mt-3 max-w-2xl drop-shadow-md">
               {slide.subtitle}
             </p>
+
+            {/* Buttons only for slides that have buttons */}
+            {slide.buttons && (
+              <div className="mt-6 flex flex-wrap gap-4 justify-center">
+                {slide.buttons.map((btn, i) => (
+                  <button
+                    key={i}
+                    className={`${btn.bg} ${btn.hover} text-black font-semibold py-2 px-5 rounded-md transition`}
+                  >
+                    {btn.text}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       ))}
