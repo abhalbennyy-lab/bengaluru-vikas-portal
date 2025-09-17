@@ -3,6 +3,9 @@ import HeroSection from "@/components/HeroSection";
 import NewsSection from "@/components/NewsSection";
 import DepartmentsSection from "@/components/DepartmentsSection";
 import AboutSection from "@/components/AboutSection";
+import PhotoGallerySection from "@/components/PhotoGallerySection";
+import SuggestionComplaintsSection from "@/components/SuggestionComplaintsSection";
+import GovernmentOrdersSection from "@/components/GovernmentOrdersSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -13,7 +16,10 @@ const Index = () => {
         <HeroSection />
         <NewsSection />
         <DepartmentsSection />
+        <PhotoGallerySection />
         <AboutSection />
+        <SuggestionComplaintsSection />
+        <GovernmentOrdersSection />
       </main>
       <Footer />
     </div>

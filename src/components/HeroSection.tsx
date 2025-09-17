@@ -8,6 +8,7 @@ const HeroSection = () => {
     { icon: FileText, title: "Press Release", description: "Official press releases" },
     { icon: Gavel, title: "E-Auction", description: "Online auction services" },
     { icon: Building, title: "Tenders", description: "Current tender notifications" },
+    { icon: Building, title: "Flats", description: "BDA flat allotment services" },
   ];
 
   return (
@@ -53,7 +54,7 @@ const HeroSection = () => {
         </div>
 
         {/* Quick Services */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-5 gap-4">
           {quickServices.map((service, index) => {
             const IconComponent = service.icon;
             return (

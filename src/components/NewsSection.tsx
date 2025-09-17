@@ -1,6 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight } from "lucide-react";
+import konadasapuraFlats from "@/assets/konadasapura-flats.jpg";
+import taxPayment from "@/assets/tax-payment.jpg";
+import fdaOffice from "@/assets/fda-office.jpg";
 
 const NewsSection = () => {
   const newsItems = [
@@ -8,37 +11,43 @@ const NewsSection = () => {
       date: "Feb 2024",
       title: "Konadasapura Phase II",
       description: "Konadasapura Phase II is a 2BHK, ready-to-move Housing project consisting 630 units with modern amenities and infrastructure.",
-      category: "Housing Project"
+      category: "Housing Project",
+      image: konadasapuraFlats
     },
     {
       date: "Jan 2024", 
       title: "DSKL Betterment Tax Payment",
       description: "Online payment facility for DSKL Betterment Tax is now available for citizens with multiple payment options.",
-      category: "Tax Services"
+      category: "Tax Services",
+      image: taxPayment
     },
     {
       date: "Dec 2023",
       title: "FDA Backlog Provisional List",
       description: "FDA Backlog Provisional List has been published. Citizens can check their status online through the official portal.",
-      category: "FDA Services"
+      category: "FDA Services",
+      image: fdaOffice
     },
     {
       date: "Nov 2023",
       title: "BDA Flat Allotment",
       description: "New BDA flats available for allotment in various layouts across Bangalore. Application process simplified.",
-      category: "Allotment"
+      category: "Allotment",
+      image: konadasapuraFlats
     },
     {
       date: "Oct 2023",
       title: "Alternative Site Allotment",
       description: "Allotment of alternative sites from Arkavathi Layout to Nada Prabhu Kempegowda Layout through randomization.",
-      category: "Site Allotment"
+      category: "Site Allotment",
+      image: fdaOffice
     },
     {
       date: "Sep 2023",
       title: "Unauthorized Layouts List",
       description: "Updated list of Unauthorized Layouts in BDA Jurisdiction published for public information and awareness.",
-      category: "Public Notice"
+      category: "Public Notice",
+      image: taxPayment
     }
   ];
 
@@ -54,7 +63,14 @@ const NewsSection = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {newsItems.map((item, index) => (
-            <Card key={index} className="bg-gradient-card hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-l-primary">
+            <Card key={index} className="bg-gradient-card hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-l-primary overflow-hidden">
+              <div className="aspect-video relative overflow-hidden">
+                <img 
+                  src={item.image} 
+                  alt={item.title}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between mb-2">
                   <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
