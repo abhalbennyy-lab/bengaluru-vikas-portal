@@ -5,26 +5,35 @@ import banner2 from "@/assets/banners1.jpg";
 
 const HeroSection = () => {
   const slides = useMemo(
-    () => [
-      {
-        img: banner1,
-        title: "Wherever BDA Goes, Bangalore Grows.",
-        subtitle: `To transform Bengaluru to an ideal global destination with high quality infrastructure,
+  () => [
+    {
+      img: banner1,
+      title: "Wherever BDA Goes, Bangalore Grows.",
+      subtitle: `To transform Bengaluru to an ideal global destination with high quality infrastructure,
 better quality of life by ensuring sustainable and planned development based on
 effective monitoring, regulation, through participatory and innovative approach.`,
-      },
-      {
-        img: banner2,
-        title: "Your Time Matters To Us. Plan Your Visit And Resolve Your Issues.",
-        subtitle: "Infrastructure, Housing, and Civic Development",
-        buttons: [
-          { text: "Pay Property Tax Now", bg: "bg-[#FFB300]", hover: "hover:bg-[#e6a500]" },
-          { text: "View User Instructions", bg: "bg-white/80", hover: "hover:bg-white" },
-        ],
-      },
-    ],
-    []
-  );
+    },
+    {
+      img: banner2,
+      title: "Pay Your Property Tax Easily & Securely Online",
+      subtitle: "",
+      buttons: [
+        { text: "Pay Property Tax Now", bg: "bg-[#FFB300]", hover: "hover:bg-[#e6a500]" },
+        { text: "View User Instructions", bg: "bg-white/80", hover: "hover:bg-white" },
+      ],
+    },
+    {
+      img: banner2, // you can use another image if needed
+      title: "Your Time Matters To Us.",
+      subtitle: "Plan Your Visit And Resolve Your Issues",
+      buttons: [
+        { text: "Resolve your Issues", bg: "bg-[#FFB300]", hover: "hover:bg-[#e6a500]" },
+      ],
+    },
+  ],
+  []
+);
+
 
   const [current, setCurrent] = useState(0);
 
