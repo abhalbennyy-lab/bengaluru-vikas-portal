@@ -16,7 +16,7 @@ const NewsSection = () => {
     },
     {
       date: "Jan 2024", 
-      title: "DSKL Betterment Tax Payment",
+      title: "Sumanahalli Flyover",
       description: "Online payment facility for DSKL Betterment Tax is now available for citizens with multiple payment options.",
       category: "Tax Services",
       image: taxPayment

@@ -34,6 +34,7 @@ const Header = () => {
             <span className="text-white/50">|</span>
             <Button variant="ghost" className="h-6 px-2 text-white text-[11px] hover:bg-white/10">ಕನ್ನಡ</Button>
             <Button className="h-6 px-3 rounded-full bg-white/20 hover:bg-white/30 text-white text-[11px]">Login</Button>
+            <Button className="h-6 px-3 rounded-full bg-white/20 hover:bg-white/30 text-white text-[11px]">Resolve Your Issue</Button>
           </div>
         </div>
       </div>
