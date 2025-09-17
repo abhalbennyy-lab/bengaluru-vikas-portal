@@ -54,16 +54,16 @@ const HeroSection = () => {
         </div>
 
         {/* Quick Services */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {quickServices.map((service, index) => {
             const IconComponent = service.icon;
             return (
-              <div key={index} className="bg-white rounded-full p-6 text-center shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
-                <div className="bg-primary rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
-                  <IconComponent className="h-8 w-8 text-black" />
+              <div key={index} className="bg-white rounded-full p-4 md:p-6 text-center shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+                <div className="bg-primary rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mx-auto mb-2 md:mb-3">
+                  <IconComponent className="h-6 w-6 md:h-8 md:w-8 text-black" />
                 </div>
-                <h3 className="font-bold text-gray-800 mb-1">{service.title}</h3>
-                <p className="text-sm text-gray-600">{service.description}</p>
+                <h3 className="font-bold text-gray-800 mb-1 text-sm md:text-base">{service.title}</h3>
+                <p className="text-xs md:text-sm text-gray-600 leading-tight">{service.description}</p>
               </div>
             );
           })}
