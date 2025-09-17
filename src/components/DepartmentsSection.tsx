@@ -51,10 +51,10 @@ const DepartmentsSection = () => {
   ];
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-gradient-to-b from-white to-muted/40">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">Explore our Sections</h2>
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-4">Explore our Sections</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Discover the various departments and their specialized services that work together to serve the citizens of Bangalore
           </p>
@@ -64,20 +64,20 @@ const DepartmentsSection = () => {
           {departments.map((dept, index) => {
             const IconComponent = dept.icon;
             return (
-              <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-0 shadow-md">
+              <Card key={index} className="group ring-1 ring-black/5 rounded-xl bg-white/90 backdrop-blur shadow-md hover:shadow-lg transition-all">
                 <CardHeader className="text-center pb-4">
-                  <div className={`${dept.color} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
+                  <div className={`${dept.color} w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
                     <IconComponent className="h-8 w-8 text-white" />
                   </div>
-                  <CardTitle className="text-xl font-bold text-gray-800 group-hover:text-primary transition-colors">
+                  <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
                     {dept.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <CardDescription className="text-gray-600 mb-6 leading-relaxed">
+                  <CardDescription className="text-gray-600 mb-6 leading-relaxed line-clamp-3">
                     {dept.description}
                   </CardDescription>
-                  <Button variant="outline" className="group/btn border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors">
+                  <Button variant="outline" className="group/btn btn-outline-primary">
                     Know More
                     <ArrowRight className="h-4 w-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                   </Button>

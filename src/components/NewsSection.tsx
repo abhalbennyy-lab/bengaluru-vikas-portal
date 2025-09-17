@@ -52,10 +52,10 @@ const NewsSection = () => {
   ];
 
   return (
-    <section className="py-16 bg-muted/30">
+    <section className="py-16 bg-gradient-to-b from-white to-muted/40">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">Latest News & Events</h2>
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-4">Latest News & Events</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Stay updated with the latest announcements, project updates, and important notifications from Bangalore Development Authority
           </p>
@@ -63,25 +63,24 @@ const NewsSection = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {newsItems.map((item, index) => (
-            <Card key={index} className="bg-gradient-card hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-l-primary overflow-hidden">
+            <Card key={index} className="bg-white/90 backdrop-blur ring-1 ring-black/5 hover:shadow-lg transition-shadow cursor-pointer rounded-xl overflow-hidden">
               <div className="aspect-video relative overflow-hidden">
                 <img 
                   src={item.image} 
                   alt={item.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
+                <div className="absolute top-3 left-3 bg-black/50 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                  <Calendar className="h-3.5 w-3.5" /> {item.date}
+                </div>
               </div>
               <CardHeader className="pb-3">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                <div className="mb-2">
+                  <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold">
                     {item.category}
                   </span>
-                  <div className="flex items-center text-muted-foreground text-sm">
-                    <Calendar className="h-4 w-4 mr-1" />
-                    {item.date}
-                  </div>
                 </div>
-                <CardTitle className="text-lg leading-tight hover:text-primary transition-colors">
+                <CardTitle className="text-xl leading-snug hover:text-primary transition-colors">
                   {item.title}
                 </CardTitle>
               </CardHeader>
@@ -89,10 +88,13 @@ const NewsSection = () => {
                 <CardDescription className="text-gray-600 mb-4 line-clamp-3">
                   {item.description}
                 </CardDescription>
-                <Button variant="ghost" className="p-0 h-auto text-primary hover:text-primary/80 font-medium">
-                  Read More
-                  <ArrowRight className="h-4 w-4 ml-1" />
-                </Button>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">{item.date}</span>
+                  <Button variant="ghost" className="p-0 h-auto text-primary hover:text-primary/80 font-medium">
+                    Read More
+                    <ArrowRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}

@@ -1,73 +1,83 @@
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, User, FileText, Gavel, Building } from "lucide-react";
-import heroBuilding from "@/assets/hero-building.jpg";
+import { useEffect, useMemo, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import banner1 from "@/assets/banners1.jpg";
+import banner2 from "@/assets/banner2.jpg";
 
 const HeroSection = () => {
-  const quickServices = [
-    { icon: User, title: "What's New", description: "Latest updates and announcements" },
-    { icon: FileText, title: "Press Release", description: "Official press releases" },
-    { icon: Gavel, title: "E-Auction", description: "Online auction services" },
-    { icon: Building, title: "Tenders", description: "Current tender notifications" },
-    { icon: Building, title: "Flats", description: "BDA flat allotment services" },
-  ];
+  const slides = useMemo(
+    () => [
+      {
+        img: banner1,
+        title: "Bangalore Development Authority",
+        subtitle: "Urban Development Department, Government of Karnataka",
+      },
+      {
+        img: banner2,
+        title: "Planned Urban Growth for Bangalore",
+        subtitle: "Infrastructure, Housing, and Civic Development",
+      },
+    ],
+    []
+  );
+
+  const [current, setCurrent] = useState(0);
+
+  // Auto-slide every 6 seconds
+  useEffect(() => {
+    const id = setInterval(() => setCurrent((prev) => (prev + 1) % slides.length), 6000);
+    return () => clearInterval(id);
+  }, [slides.length]);
+
+  const goPrev = () => setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+  const goNext = () => setCurrent((prev) => (prev + 1) % slides.length);
 
   return (
-    <section className="relative min-h-[600px] flex items-center">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroBuilding})` }}
+    <section className="relative w-full h-[360px] sm:h-[420px] md:h-[640px] overflow-hidden bg-black">
+      {/* Slides with Fade Transition */}
+      {slides.map((slide, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+            index === current ? "opacity-100 z-10" : "opacity-0 z-0"
+          }`}
+        >
+          <img
+            src={slide.img}
+            alt={slide.title}
+            className="w-full h-full object-contain md:object-cover transform md:scale-105"
+          />
+          {/* Subtle Gradient Overlay for Readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
+        </div>
+      ))}
+
+      {/* Text and CTA removed as requested */}
+
+      {/* Navigation Arrows */}
+      <button
+        onClick={goPrev}
+        className="absolute top-1/2 left-6 -translate-y-1/2 z-30 p-2 text-white rounded-full hover:bg-black/30 transition"
       >
-        <div className="absolute inset-0 bg-black/40"></div>
-      </div>
+        <ChevronLeft className="h-7 w-7" />
+      </button>
+      <button
+        onClick={goNext}
+        className="absolute top-1/2 right-6 -translate-y-1/2 z-30 p-2 text-white rounded-full hover:bg-black/30 transition"
+      >
+        <ChevronRight className="h-7 w-7" />
+      </button>
 
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4">
-        <div className="flex items-center justify-between">
-          <Button variant="ghost" className="text-white hover:bg-white/20 p-3">
-            <ChevronLeft className="h-8 w-8" />
-          </Button>
-
-          <div className="text-center text-white max-w-4xl">
-            {/* Citizen Initiatives Badge */}
-            <div className="inline-block mb-6">
-              <span className="bg-gov-red px-6 py-2 rounded-full text-white font-semibold">
-                More Citizen Friendly Initiatives
-              </span>
-            </div>
-
-            {/* Main Heading */}
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              "Your Time Matters To Us.<br />
-              Plan Your Visit And Resolve Your Issues"
-            </h1>
-
-            {/* CTA Button */}
-            <Button className="bg-gradient-hero hover:opacity-90 text-black font-bold text-lg px-8 py-4 rounded-full">
-              Resolve your Issues
-            </Button>
-          </div>
-
-          <Button variant="ghost" className="text-white hover:bg-white/20 p-3">
-            <ChevronRight className="h-8 w-8" />
-          </Button>
-        </div>
-
-        {/* Quick Services */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {quickServices.map((service, index) => {
-            const IconComponent = service.icon;
-            return (
-              <div key={index} className="bg-white rounded-full p-4 md:p-6 text-center shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
-                <div className="bg-primary rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mx-auto mb-2 md:mb-3">
-                  <IconComponent className="h-6 w-6 md:h-8 md:w-8 text-black" />
-                </div>
-                <h3 className="font-bold text-gray-800 mb-1 text-sm md:text-base">{service.title}</h3>
-                <p className="text-xs md:text-sm text-gray-600 leading-tight">{service.description}</p>
-              </div>
-            );
-          })}
-        </div>
+      {/* Dots Navigation */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-30">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrent(index)}
+            className={`w-3 h-3 rounded-full transition-all ${
+              index === current ? "bg-[#FFB300] scale-125 shadow-lg" : "bg-white/50 hover:bg-white/80"
+            }`}
+          />
+        ))}
       </div>
     </section>
   );

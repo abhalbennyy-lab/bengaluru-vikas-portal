@@ -4,17 +4,17 @@ import { Phone, Mail, Clock, MessageSquare, FileText } from "lucide-react";
 
 const SuggestionComplaintsSection = () => {
   return (
-    <section className="py-16 bg-muted/30">
+    <section className="py-16 bg-gradient-to-b from-white to-muted/40">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-foreground mb-4">Suggestion and Complaints</h2>
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-4">Suggestion and Complaints</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             Bringing everything that you want at your fingerprints!
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <Card className="text-center bg-gradient-card hover:shadow-lg transition-shadow">
+          <Card className="text-center ring-1 ring-black/5 bg-white/90 backdrop-blur rounded-xl shadow-md hover:shadow-lg transition-shadow">
             <CardHeader className="pb-4">
               <div className="bg-primary rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
                 <Phone className="h-8 w-8 text-black" />
@@ -22,11 +22,11 @@ const SuggestionComplaintsSection = () => {
               <CardTitle className="text-lg">Call on</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-primary font-bold text-lg">080-23442273,74</p>
+              <p className="text-primary font-bold text-lg"><a href="tel:08023442273">080-23442273,74</a></p>
             </CardContent>
           </Card>
 
-          <Card className="text-center bg-gradient-card hover:shadow-lg transition-shadow">
+          <Card className="text-center ring-1 ring-black/5 bg-white/90 backdrop-blur rounded-xl shadow-md hover:shadow-lg transition-shadow">
             <CardHeader className="pb-4">
               <div className="bg-primary rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
                 <Mail className="h-8 w-8 text-black" />
@@ -34,11 +34,11 @@ const SuggestionComplaintsSection = () => {
               <CardTitle className="text-lg">Mail At</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-primary font-bold">pro@bdabangalore.org</p>
+              <p className="text-primary font-bold"><a href="mailto:pro@bdabangalore.org">pro@bdabangalore.org</a></p>
             </CardContent>
           </Card>
 
-          <Card className="text-center bg-gradient-card hover:shadow-lg transition-shadow">
+          <Card className="text-center ring-1 ring-black/5 bg-white/90 backdrop-blur rounded-xl shadow-md hover:shadow-lg transition-shadow">
             <CardHeader className="pb-4">
               <div className="bg-primary rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
                 <Clock className="h-8 w-8 text-black" />
@@ -50,7 +50,7 @@ const SuggestionComplaintsSection = () => {
             </CardContent>
           </Card>
 
-          <Card className="text-center bg-gradient-card hover:shadow-lg transition-shadow">
+          <Card className="text-center ring-1 ring-black/5 bg-white/90 backdrop-blur rounded-xl shadow-md hover:shadow-lg transition-shadow">
             <CardHeader className="pb-4">
               <div className="bg-primary rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
                 <MessageSquare className="h-8 w-8 text-black" />
@@ -58,9 +58,10 @@ const SuggestionComplaintsSection = () => {
               <CardTitle className="text-lg">Suggestion</CardTitle>
             </CardHeader>
             <CardContent>
-              <Button className="bg-primary hover:bg-primary/90 text-black font-bold">
-                Feedback-Box
-              </Button>
+              <div className="flex items-center justify-center gap-3">
+                <Button className="btn-primary font-semibold">Suggestion</Button>
+                <Button variant="outline" className="btn-outline-primary font-semibold">Feedback-Box</Button>
+              </div>
             </CardContent>
           </Card>
         </div>

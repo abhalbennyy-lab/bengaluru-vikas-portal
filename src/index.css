@@ -7,6 +7,9 @@ All colors MUST be HSL.
 */
 
 @layer base {
+  html, body {
+    overflow-x: hidden;
+  }
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -17,16 +20,16 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 45 100% 51%;
-    --primary-foreground: 0 0% 0%;
+    --primary: 221 83% 53%; /* Professional Blue */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 84% 60%;
+    --secondary: 199 89% 48%; /* Cyan accent */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 45 29% 97%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 218 11% 35%;
 
-    --accent: 45 93% 47%;
+    --accent: 221 89% 66%;
     --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84.2% 60.2%;
@@ -34,18 +37,18 @@ All colors MUST be HSL.
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 45 100% 51%;
+    --ring: 221 83% 53%;
     
-    /* Government Theme Colors */
-    --gov-yellow: 45 100% 51%;
-    --gov-yellow-light: 45 100% 85%;
-    --gov-red: 0 84% 60%;
-    --gov-red-dark: 0 100% 25%;
-    --gov-orange: 24 100% 50%;
+    /* Government Theme Colors (repurposed to blues) */
+    --gov-yellow: 199 89% 48%;
+    --gov-yellow-light: 200 89% 85%;
+    --gov-red: 221 83% 53%;
+    --gov-red-dark: 221 83% 35%;
+    --gov-orange: 217 91% 60%;
     
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(var(--gov-yellow)), hsl(var(--gov-orange)));
-    --gradient-nav: linear-gradient(90deg, hsl(var(--gov-yellow)), hsl(var(--gov-red)));
+    --gradient-hero: linear-gradient(135deg, hsl(221 83% 53%), hsl(217 91% 60%));
+    --gradient-nav: linear-gradient(90deg, hsl(221 83% 53%), hsl(199 89% 48%));
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(45 29% 97%));
 
     --radius: 0.5rem;
@@ -126,6 +129,8 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   .line-clamp-3 {
@@ -133,5 +138,26 @@ All colors MUST be HSL.
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+  
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px hsl(var(--ring) / 0.35);
+    border-radius: 6px;
+    transition: var(--transition-smooth);
+  }
+}
+
+@layer components {
+  .card-surface {
+    @apply bg-white rounded-xl shadow-elegant ring-1 ring-black/5;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:opacity-90 transition-colors;
+  }
+
+  .btn-outline-primary {
+    @apply border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors;
   }
 }

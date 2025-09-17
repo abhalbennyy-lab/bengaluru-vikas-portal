@@ -69,13 +69,16 @@ const Footer = () => {
         </div>
 
         {/* Bottom Footer */}
-        <div className="text-center text-sm text-gray-400 space-y-2">
+        <div className="text-center text-sm text-gray-300 space-y-2">
           <p>Content owned by: <span className="text-white">Bangalore Development Authority, Government of Karnataka.</span></p>
           <p>
-            <span className="text-white">2025</span> | 
-            Designed, Developed & Hosted By: <span className="text-primary">CENTER FOR e-GOVERNANCE, Government of Karnataka</span> @ 2024, All Rights Reserved.
+            Contact: <a href="tel:9483166622" className="text-white hover:underline">9483166622</a>
+            <span className="mx-2">|</span>
+            <a href="https://bda.karnataka.gov.in" target="_blank" rel="noopener noreferrer" className="text-white hover:underline">bda.karnataka.gov.in</a>
           </p>
-          <p className="text-xs">Developed by <span className="text-primary">Eloqix Technologies</span></p>
+          <p>
+            Designed, Developed & Hosted By: <span className="text-primary">Bangalore Development Authority</span>
+          </p>
         </div>
       </div>
     </footer>
