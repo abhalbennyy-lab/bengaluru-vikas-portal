@@ -47,6 +47,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        gov: {
+          yellow: "hsl(var(--gov-yellow))",
+          "yellow-light": "hsl(var(--gov-yellow-light))",
+          red: "hsl(var(--gov-red))",
+          "red-dark": "hsl(var(--gov-red-dark))",
+          orange: "hsl(var(--gov-orange))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -57,6 +64,11 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      backgroundImage: {
+        "gradient-hero": "var(--gradient-hero)",
+        "gradient-nav": "var(--gradient-nav)",
+        "gradient-card": "var(--gradient-card)",
       },
       borderRadius: {
         lg: "var(--radius)",
