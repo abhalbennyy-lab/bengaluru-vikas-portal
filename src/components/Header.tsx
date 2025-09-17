@@ -18,7 +18,7 @@ const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="w-full fixed top-0 left-0 z-50 bg-white shadow-md">
+    <header className="w-full sticky top-0 left-0 z-50 bg-white shadow-md">
       {/* Top Bar */}
       <div className="bg-[#1A237E] text-white text-[11px]">
         <div className="container mx-auto flex items-center justify-between px-3 py-1.5">
