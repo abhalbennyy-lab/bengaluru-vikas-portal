@@ -1,19 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import banner1 from "@/assets/banners1.jpg";
-import banner2 from "@/assets/banner2.jpg";
+import banner2 from "@/assets/banners1.jpg";
 
 const HeroSection = () => {
   const slides = useMemo(
     () => [
       {
         img: banner1,
-        title: "Bangalore Development Authority",
-        subtitle: "Urban Development Department, Government of Karnataka",
+        title: "Wherever BDA Goes, Bangalore Grows.",
+        subtitle: `To transform Bengaluru to an ideal global destination with high quality infrastructure,
+better quality of life by ensuring sustainable and planned development based on
+effective monitoring, regulation, through participatory and innovative approach.`,
       },
       {
         img: banner2,
-        title: "Planned Urban Growth for Bangalore",
+        title: "Your Time Matters To Us. Plan Your Visit And Resolve Your Issues.",
         subtitle: "Infrastructure, Housing, and Civic Development",
       },
     ],
@@ -24,16 +26,21 @@ const HeroSection = () => {
 
   // Auto-slide every 6 seconds
   useEffect(() => {
-    const id = setInterval(() => setCurrent((prev) => (prev + 1) % slides.length), 6000);
+    const id = setInterval(
+      () => setCurrent((prev) => (prev + 1) % slides.length),
+      6000
+    );
     return () => clearInterval(id);
   }, [slides.length]);
 
-  const goPrev = () => setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
-  const goNext = () => setCurrent((prev) => (prev + 1) % slides.length);
+  const goPrev = () =>
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+  const goNext = () =>
+    setCurrent((prev) => (prev + 1) % slides.length);
 
   return (
-    <section className="relative w-full h-[360px] sm:h-[420px] md:h-[640px] overflow-hidden bg-black">
-      {/* Slides with Fade Transition */}
+    <section className="relative w-full h-[500px] sm:h-[420px] md:h-[640px] overflow-hidden bg-black">
+      {/* Slides */}
       {slides.map((slide, index) => (
         <div
           key={index}
@@ -41,17 +48,27 @@ const HeroSection = () => {
             index === current ? "opacity-100 z-10" : "opacity-0 z-0"
           }`}
         >
+          {/* Background Image */}
           <img
             src={slide.img}
             alt={slide.title}
-            className="w-full h-full object-contain md:object-cover transform md:scale-105"
+            className="w-full h-full object-cover transform md:scale-105"
           />
-          {/* Subtle Gradient Overlay for Readability */}
+
+          {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
+
+          {/* Text Content */}
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+            <h2 className="text-white text-xl sm:text-3xl md:text-5xl font-bold drop-shadow-lg">
+              {slide.title}
+            </h2>
+            <p className="text-white text-sm sm:text-lg md:text-2xl mt-3 max-w-2xl drop-shadow-md">
+              {slide.subtitle}
+            </p>
+          </div>
         </div>
       ))}
-
-      {/* Text and CTA removed as requested */}
 
       {/* Navigation Arrows */}
       <button
@@ -74,7 +91,9 @@ const HeroSection = () => {
             key={index}
             onClick={() => setCurrent(index)}
             className={`w-3 h-3 rounded-full transition-all ${
-              index === current ? "bg-[#FFB300] scale-125 shadow-lg" : "bg-white/50 hover:bg-white/80"
+              index === current
+                ? "bg-[#FFB300] scale-125 shadow-lg"
+                : "bg-white/50 hover:bg-white/80"
             }`}
           />
         ))}
