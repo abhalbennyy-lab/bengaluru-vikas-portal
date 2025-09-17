@@ -16,8 +16,9 @@ const Index = () => {
       <Header />
       <main>
         <HeroSection />
+         <QuickServicesSection />
          <AboutSection />
-        <QuickServicesSection />
+       
         <NewsSection />
         <BrandBengaluruSection />
         <DepartmentsSection />
