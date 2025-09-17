@@ -22,19 +22,22 @@ const SuggestionComplaintsSection = () => {
               <CardTitle className="text-lg">Call on</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-primary font-bold text-lg"><a href="tel:08023442273">080-23442273,74</a></p>
+              <p className="text-primary font-bold text-lg"><a href="tel:9483166622">9483166622</a></p>
             </CardContent>
           </Card>
 
+          
+
+          {/* Website */}
           <Card className="text-center ring-1 ring-black/5 bg-white/90 backdrop-blur rounded-xl shadow-md hover:shadow-lg transition-shadow">
             <CardHeader className="pb-4">
               <div className="bg-primary rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
-                <Mail className="h-8 w-8 text-black" />
+                <FileText className="h-8 w-8 text-black" />
               </div>
-              <CardTitle className="text-lg">Mail At</CardTitle>
+              <CardTitle className="text-lg">Website</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-primary font-bold"><a href="mailto:pro@bdabangalore.org">pro@bdabangalore.org</a></p>
+              <p className="text-primary font-bold"><a href="https://bda.karnataka.gov.in" target="_blank" rel="noreferrer">bda.karnataka.gov.in</a></p>
             </CardContent>
           </Card>
 
