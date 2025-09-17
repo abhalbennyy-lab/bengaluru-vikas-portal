@@ -1,39 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import banner1 from "@/assets/banners1.jpg";
-import banner2 from "@/assets/banners1.jpg";
+import banner1 from "@/assets/image1.png";
+import banner2 from "@/assets/image2.png";
+import banner3 from "@/assets/image3.png";
 
 const HeroSection = () => {
   const slides = useMemo(
-  () => [
-    {
-      img: banner1,
-      title: "Wherever BDA Goes, Bangalore Grows.",
-      subtitle: `To transform Bengaluru to an ideal global destination with high quality infrastructure,
-better quality of life by ensuring sustainable and planned development based on
-effective monitoring, regulation, through participatory and innovative approach.`,
-    },
-    {
-      img: banner2,
-      title: "Pay Your Property Tax Easily & Securely Online",
-      subtitle: "",
-      buttons: [
-        { text: "Pay Property Tax Now", bg: "bg-[#FFB300]", hover: "hover:bg-[#e6a500]" },
-        { text: "View User Instructions", bg: "bg-white/80", hover: "hover:bg-white" },
-      ],
-    },
-    {
-      img: banner2, // you can use another image if needed
-      title: "Your Time Matters To Us.",
-      subtitle: "Plan Your Visit And Resolve Your Issues",
-      buttons: [
-        { text: "Resolve your Issues", bg: "bg-[#FFB300]", hover: "hover:bg-[#e6a500]" },
-      ],
-    },
-  ],
-  []
-);
-
+    () => [banner1, banner2, banner3],
+    []
+  );
 
   const [current, setCurrent] = useState(0);
 
@@ -52,48 +27,22 @@ effective monitoring, regulation, through participatory and innovative approach.
     setCurrent((prev) => (prev + 1) % slides.length);
 
   return (
-    <section className="relative w-full h-[500px] sm:h-[420px] md:h-[640px] overflow-hidden bg-black">
+    <section className="relative w-full h-[600px] sm:h-[520px] md:h-[1000px] overflow-hidden bg-black">
       {/* Slides */}
-      {slides.map((slide, index) => (
+      {slides.map((img, index) => (
         <div
           key={index}
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             index === current ? "opacity-100 z-10" : "opacity-0 z-0"
           }`}
         >
-          {/* Background Image */}
           <img
-            src={slide.img}
-            alt={slide.title}
-            className="w-full h-full object-cover transform md:scale-105"
+            src={img}
+            alt={`slide-${index}`}
+            className="w-full h-full object-fit"
           />
-
-          {/* Gradient Overlay */}
+          {/* Optional overlay if you want dark effect */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
-
-          {/* Text Content */}
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 mt-5">
-            <h2 className="text-white text-xl sm:text-3xl md:text-5xl font-bold drop-shadow-lg">
-              {slide.title}
-            </h2>
-            <p className="text-white text-sm sm:text-lg md:text-2xl mt-3 max-w-2xl drop-shadow-md">
-              {slide.subtitle}
-            </p>
-
-            {/* Buttons only for slides that have buttons */}
-            {slide.buttons && (
-              <div className="mt-6 flex flex-wrap gap-4 justify-center">
-                {slide.buttons.map((btn, i) => (
-                  <button
-                    key={i}
-                    className={`${btn.bg} ${btn.hover} text-black font-semibold py-2 px-5 rounded-md transition`}
-                  >
-                    {btn.text}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
       ))}
 
