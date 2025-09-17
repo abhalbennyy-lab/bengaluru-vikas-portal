@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import banner1 from "@/assets/image1.png";
-import banner2 from "@/assets/image2.png";
-import banner3 from "@/assets/image3.png";
+import banner1 from "@/assets/1_20250917_183529_0000.png";
+import banner2 from "@/assets/2_20250917_183530_0001.png";
+import banner3 from "@/assets/3_20250917_183530_0002.png";
 
 const HeroSection = () => {
   const slides = useMemo(
@@ -27,7 +27,7 @@ const HeroSection = () => {
     setCurrent((prev) => (prev + 1) % slides.length);
 
   return (
-    <section className="relative w-full h-[600px] sm:h-[520px] md:h-[1000px] overflow-hidden bg-black">
+<section className="relative w-full h-[550px] sm:h-[520px] md:h-[1100px]">
       {/* Slides */}
       {slides.map((img, index) => (
         <div
@@ -36,11 +36,14 @@ const HeroSection = () => {
             index === current ? "opacity-100 z-10" : "opacity-0 z-0"
           }`}
         >
-          <img
-            src={img}
-            alt={`slide-${index}`}
-            className="w-full h-full object-fit"
-          />
+     <img
+  src={img}
+  alt={`slide-${index}`}
+  className="w-full h-full "
+/>
+
+
+
           {/* Optional overlay if you want dark effect */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
         </div>
