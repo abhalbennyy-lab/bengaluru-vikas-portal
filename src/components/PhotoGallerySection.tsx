@@ -1,5 +1,5 @@
 import development1 from "@/assets/Komaghatta 2.jpg";
-import development2 from "@/assets/tax-payment.jpg";
+import development2 from "@/assets/Kommaghatta all buildings.jpg";
 import development3 from "@/assets/Bda night view.jpg";
 
 const PhotoGallerySection = () => {
