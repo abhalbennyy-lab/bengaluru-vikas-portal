@@ -41,15 +41,7 @@ const AboutSection = () => {
               </p>
             </div>
 
-            <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-primary/10 border-l-4 border-primary rounded-r-lg">
-              <p className="text-gray-800 italic text-base sm:text-lg">
-                "Come, join your hands with us and share your opinion for the
-                comprehensive development of our pride Bengaluru city."
-              </p>
-              <p className="text-primary font-semibold mt-2">
-                - Brand Bengaluru Team
-              </p>
-            </div>
+            
           </div>
 
           {/* Image instead of Cards */}
