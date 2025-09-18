@@ -1,6 +1,10 @@
 import development1 from "@/assets/Komaghatta 2.jpg";
 import development2 from "@/assets/Kommaghatta all buildings.jpg";
 import development3 from "@/assets/Bda night view.jpg";
+import dev4 from "@/assets/Hennur.jpg";
+import dev5 from "@/assets/Narayanapura 1.jpg";
+import dev6 from "@/assets/HBR Layout.jpg";
+
 
 const PhotoGallerySection = () => {
   const galleryImages = [
@@ -20,17 +24,17 @@ const PhotoGallerySection = () => {
       description: "Road and utility development"
     },
     {
-      image: development1,
+      image: dev4,
       title: "Housing Projects",
       description: "Quality residential units"
     },
     {
-      image: development2,
+      image: dev5,
       title: "Urban Planning",
       description: "Systematic city development"
     },
     {
-      image: development3,
+      image: dev6,
       title: "Modern Amenities",
       description: "State-of-the-art facilities"
     }
