@@ -1,6 +1,6 @@
-import development1 from "@/assets/development-1.jpg";
-import development2 from "@/assets/development-2.jpg";
-import development3 from "@/assets/development-3.jpg";
+import development1 from "@/assets/Komaghatta 2.jpg";
+import development2 from "@/assets/tax-payment.jpg";
+import development3 from "@/assets/Bda night view.jpg";
 
 const PhotoGallerySection = () => {
   const galleryImages = [

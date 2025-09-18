@@ -1,54 +1,68 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight } from "lucide-react";
-import konadasapuraFlats from "@/assets/konadasapura-flats.jpg";
-import taxPayment from "@/assets/tax-payment.jpg";
-import fdaOffice from "@/assets/fda-office.jpg";
+import img1 from "@/assets/other/DJI_20250823171339_0049_D.jpg";
+import img2 from "@/assets/other/DJI_20250824114747_0008_D.jpg";
+import hebbalFlyover from "@/assets/other/Hebbal Flyover - Top Down.jpg";
+import hunnigereVillas from "@/assets/other/DJI_20250824114747_0008_D.jpg";
+import kaniminikeFlats from "@/assets/other/Kaniminike Green Buildings.jpg";
+import militaryMemorial from "@/assets/other/military memorial.jpg";
+
 
 const NewsSection = () => {
   const newsItems = [
-    {
-      date: "Feb 2024",
-      title: "Konadasapura Phase II",
-      description: "Konadasapura Phase II is a 2BHK, ready-to-move Housing project consisting 630 units with modern amenities and infrastructure.",
-      category: "Housing Project",
-      image: konadasapuraFlats
-    },
-    {
-      date: "Jan 2024", 
-      title: "Sumanahalli Flyover",
-      description: "Online payment facility for DSKL Betterment Tax is now available for citizens with multiple payment options.",
-      category: "Tax Services",
-      image: taxPayment
-    },
-    {
-      date: "Dec 2023",
-      title: "FDA Backlog Provisional List",
-      description: "FDA Backlog Provisional List has been published. Citizens can check their status online through the official portal.",
-      category: "FDA Services",
-      image: fdaOffice
-    },
-    {
-      date: "Nov 2023",
-      title: "BDA Flat Allotment",
-      description: "New BDA flats available for allotment in various layouts across Bangalore. Application process simplified.",
-      category: "Allotment",
-      image: konadasapuraFlats
-    },
-    {
-      date: "Oct 2023",
-      title: "Alternative Site Allotment",
-      description: "Allotment of alternative sites from Arkavathi Layout to Nada Prabhu Kempegowda Layout through randomization.",
-      category: "Site Allotment",
-      image: fdaOffice
-    },
-    {
-      date: "Sep 2023",
-      title: "Unauthorized Layouts List",
-      description: "Updated list of Unauthorized Layouts in BDA Jurisdiction published for public information and awareness.",
-      category: "Public Notice",
-      image: taxPayment
-    }
+ {
+  date: "Mar 2024",
+  title: "Varthur Lake Rejuvenation",
+  description:
+    "The Bangalore Development Authority (BDA) has taken up the rejuvenation of Varthur Lake, one of the city’s largest and most important water bodies, with the aim of restoring its ecological balance and transforming it into a vibrant public space. The project includes desilting, bund strengthening, creation of wetlands, sewage diversion, and development of buffer zones to ensure sustainable conservation. In addition, facilities such as parks, walkways, lighting, surveillance systems, and an idol-immersion tank are being developed to provide a safe and eco-friendly environment for citizens.",
+  category: "Environmental Project",
+  image:img1
+},
+{
+  date: "Apr 2024",
+  title: "Alur BDA Flats & Villas Project",
+  description:
+    "The Bangalore Development Authority (BDA) is developing the Alur Flats & Villas Project at Dasanapura, designed to provide affordable, well-planned, and high-quality housing options to citizens of Bengaluru. This project reflects BDA’s commitment to delivering sustainable residential communities with modern amenities, ensuring convenience, safety, and a better quality of life. Project Features: Housing Options – 1-BHK flats and spacious 3-BHK duplex villas. Amenities – 24×7 water supply, power backup, lifts, parking facilities, landscaped gardens, children’s play area, and community spaces. Safety & Security – Fire safety provisions, CCTV surveillance, and well-lit common areas. Connectivity – Strategically located in Alur with good access to Tumkur Road and essential services such as schools, healthcare, and transport. Vision – Through this initiative, BDA aims to make homeownership accessible and affordable while promoting planned urban development. The Alur Flats & Villas Project is designed not only as a housing complex, but as a self-sustained community that supports the growing aspirations of Bengaluru’s citizens.",
+  category: "Housing Project",
+  image: img2
+},
+
+
+   {
+  date: "Aug 2025",
+  title: "Hebbal Flyover Loop",
+  description:
+    "The Bangalore Development Authority (BDA) has completed and inaugurated the Hebbal Flyover Loop, a 700-metre elevated ramp constructed at a cost of ₹80 crore. The project provides seamless connectivity for vehicles from Nagawara and K.R. Puram towards Mehkri Circle, easing congestion at Hebbal Junction by up to 30% and improving access to the airport, IT corridors, and northern suburbs. Designed and built in just 7 months, this loop is part of BDA’s larger plan for signal-free corridors and improved road infrastructure across Bengaluru.",
+  category: "Infrastructure Project",
+  image: hebbalFlyover // your image import here
+},
+{
+  date: "Jul 2025",
+  title: "Hunnigere Villa Project",
+  description:
+    "The Bangalore Development Authority (BDA) has successfully completed the Hunnigere Villa Project, a thoughtfully planned residential community located in Hunnigere, Bengaluru North. This project features spacious 3-BHK duplex villas with landscaped gardens, children’s play area, community facilities, and reliable civic infrastructure. Strategically situated near Tumkur Road, it ensures easy access to schools, hospitals, transport hubs, and employment centers, fulfilling BDA’s mission of providing planned, affordable, and sustainable housing solutions.",
+  category: "Housing Project",
+  image: hunnigereVillas // your image import here
+},
+{
+  date: "Jun 2025",
+  title: "Kaniminike Flats Project",
+  description:
+    "The Bangalore Development Authority (BDA) has successfully completed the Kaniminike Flats Project in Bengaluru South, offering 1-BHK and 2-BHK flats designed for functionality, comfort, and efficient living. Amenities include 24×7 water supply, lifts, power backup, landscaped gardens, children’s play area, and community spaces. Located near Mysuru Road with easy access to educational institutions, healthcare, public transport, and employment hubs, the project enhances quality of life for its residents.",
+  category: "Housing Project",
+  image: kaniminikeFlats // your image import here
+},
+
+{
+  date: "May 2025",
+  title: "National Military Memorial",
+  description:
+    "The Bengaluru Development Authority (BDA) has completed the National Military Memorial in Bengaluru, a tribute to the bravery and sacrifice of India’s armed forces personnel. Spread across 7.5 acres, the memorial features an iconic 78-feet Veeragallu monolith engraved with the names of 22,000 martyrs, India’s tallest flag mast at 65 meters, and displays of historic military hardware. An underground motivation hall showcases weapon systems and the proud legacy of our soldiers, making the memorial a place of remembrance, inspiration, and national pride.",
+  category: "Public Monument",
+  image: militaryMemorial // your image import here
+}
+
   ];
 
   return (
