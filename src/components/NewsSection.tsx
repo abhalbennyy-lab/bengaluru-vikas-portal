@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight } from "lucide-react";
 import img1 from "@/assets/other/DJI_20250823171339_0049_D.jpg";
-import img2 from "@/assets/other/DJI_20250824114747_0008_D.jpg";
+import img2 from "@/assets/Bda night view.jpg";
 import hebbalFlyover from "@/assets/other/Hebbal Flyover - Top Down.jpg";
 import hunnigereVillas from "@/assets/other/DJI_20250824114747_0008_D.jpg";
 import kaniminikeFlats from "@/assets/other/Kaniminike Green Buildings.jpg";
