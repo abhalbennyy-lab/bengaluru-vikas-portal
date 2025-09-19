@@ -11,7 +11,7 @@ const Header = () => {
     { label: "IPGRS", href: "#ipgrs" },
     { label: "ONLINE SERVICES", href: "#services" },
     { label: "ONGOING PROJECTS", href: "#projects" },
-    { label: "EODB", href: "#eodb" },
+    { label: "EODB", href: "/eodb" },
     { label: "CONTACT US", href: "#contact" },
   ];
 
