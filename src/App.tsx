@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import BrandBengaluru from "./pages/BrandBengaluru";
 import EODB from "./pages/EODB";
 import Contact from "./pages/Contact";
+import OnlineServices from "./pages/OnlineServices";
 import NotFound from "./pages/NotFound";
 import "./index.css";
 
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/brand-bengaluru" element={<BrandBengaluru />} />
           <Route path="/eodb" element={<EODB />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/online-services" element={<OnlineServices />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
