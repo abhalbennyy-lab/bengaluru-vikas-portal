@@ -12,7 +12,7 @@ const Header = () => {
     { label: "ONLINE SERVICES", href: "#services" },
     { label: "ONGOING PROJECTS", href: "#projects" },
     { label: "EODB", href: "/eodb" },
-    { label: "CONTACT US", href: "#contact" },
+    { label: "CONTACT US", href: "/contact" },
   ];
 
   const [mobileOpen, setMobileOpen] = useState(false);

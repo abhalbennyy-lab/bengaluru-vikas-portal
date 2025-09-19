@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import BrandBengaluru from "./pages/BrandBengaluru";
 import EODB from "./pages/EODB";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import "./index.css";
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/brand-bengaluru" element={<BrandBengaluru />} />
           <Route path="/eodb" element={<EODB />} />
+          <Route path="/contact" element={<Contact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
