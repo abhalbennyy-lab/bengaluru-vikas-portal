@@ -4,6 +4,7 @@ import NewsSection from "@/components/NewsSection";
 import DepartmentsSection from "@/components/DepartmentsSection";
 import BrandBengaluruSection from "@/components/BrandBengaluruSection";
 import AboutSection from "@/components/AboutSection";
+import VideoSection from "@/components/VideoSection";
 import PhotoGallerySection from "@/components/PhotoGallerySection";
 import SuggestionComplaintsSection from "@/components/SuggestionComplaintsSection";
 import GovernmentOrdersSection from "@/components/GovernmentOrdersSection";
@@ -18,7 +19,8 @@ const Index = () => {
         <HeroSection />
          <QuickServicesSection />
          <AboutSection />
-       
+         <VideoSection />
+        
         <NewsSection />
         <BrandBengaluruSection />
         <DepartmentsSection />
