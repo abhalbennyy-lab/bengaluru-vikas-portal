@@ -3,10 +3,12 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import banner1 from "@/assets/image1.png";
 import banner2 from "@/assets/image2.png";
 import banner3 from "@/assets/image3.png";
+import banner4 from "@/assets/Education Landing Page Non-profit Website in Green Dark Blue Teal Style_20250918_164446_0000.png";
+import banner5 from "@/assets/Education Landing Page Non-profit Website in Green Dark Blue Teal Style_20250918_164609_0000.png";
 
 const HeroSection = () => {
   const slides = useMemo(
-    () => [banner1, banner2, banner3],
+    () => [banner1, banner2, banner3, banner4, banner5],
     []
   );
 
