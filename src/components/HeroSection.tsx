@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import banner2 from "@/assets/image2.png";
+
 
 import banner4 from "@/assets/WhatsApp Image 2025-09-19 at 10.23.04 AM (1).jpeg";
 import banner5 from "@/assets/WhatsApp Image 2025-09-19 at 10.23.04 AM.jpeg";
 
 const HeroSection = () => {
   const slides = useMemo(
-    () => [ banner2,  banner4, banner5],
+    () => [   banner4, banner5],
     []
   );
 
