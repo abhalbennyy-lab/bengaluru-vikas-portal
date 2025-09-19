@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import banner1 from "@/assets/1_20250917_183529_0000.png";
-import banner2 from "@/assets/2_20250917_183530_0001.png";
-import banner3 from "@/assets/3_20250917_183530_0002.png";
+import banner1 from "@/assets/image1.png";
+import banner2 from "@/assets/image2.png";
+import banner3 from "@/assets/image3.png";
 
 const HeroSection = () => {
   const slides = useMemo(

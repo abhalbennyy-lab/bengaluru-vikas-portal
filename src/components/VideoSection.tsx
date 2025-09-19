@@ -15,11 +15,11 @@ const VideoSection = () => {
           <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
             <iframe 
               className="absolute top-0 left-0 w-full h-full rounded-lg shadow-lg"
-              src="https://www.youtube.com/embed/mbNlb5QrM3Q?si=u8eDPXUsKcqJyGMz&controls=0" 
-              title="YouTube video player" 
-              frameBorder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              referrerPolicy="strict-origin-when-cross-origin" 
+              src="https://www.youtube.com/embed/mbNlb5QrM3Q?si=u8eDPXUsKcqJyGMz&rel=0&modestbranding=1"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
             />
           </div>
