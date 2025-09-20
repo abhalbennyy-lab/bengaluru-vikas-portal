@@ -9,8 +9,8 @@ const Header = () => {
     { label: "RTI", href: "#rti" },
     { label: "SECTIONS", href: "#sections" },
     { label: "IPGRS", href: "#ipgrs" },
-    { label: "ONLINE SERVICES", href: "/online-services" },
-    { label: "ONGOING PROJECTS", href: "#projects" },
+    { label: "ONLINE SERVICES", href: "/#project" },
+    { label: "ONGOING PROJECTS", href: "/ongoingproject" },
     { label: "EODB", href: "/eodb" },
     { label: "CONTACT US", href: "/contact" },
   ];
