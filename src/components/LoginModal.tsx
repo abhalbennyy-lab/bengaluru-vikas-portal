@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Flag, User, Lock, Mail } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface LoginModalProps {
 
 const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
   const [isLogin, setIsLogin] = useState(true);
+  const { theme } = useTheme();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -37,18 +39,29 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader className="text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-patriotic">
+          <div className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full ${
+            theme === 'independence-day' ? 'bg-gradient-patriotic' : 'bg-primary'
+          }`}>
             <Flag className="h-6 w-6 text-white" />
           </div>
-          <DialogTitle className="bg-gradient-to-r from-india-saffron to-india-green bg-clip-text text-transparent text-2xl font-bold">
+          <DialogTitle className={`text-2xl font-bold ${
+            theme === 'independence-day' 
+              ? 'bg-gradient-to-r from-india-saffron to-india-green bg-clip-text text-transparent'
+              : 'text-primary'
+          }`}>
             {isLogin ? "Welcome to BDA Portal" : "Join BDA Community"}
           </DialogTitle>
           <p className="text-sm text-muted-foreground mt-2">
-            Celebrating India's Independence Day 🇮🇳
+            {theme === 'independence-day' 
+              ? "Celebrating India's Independence Day 🇮🇳" 
+              : "Government of Karnataka Portal"
+            }
           </p>
         </DialogHeader>
 
-        <Card className="border-0 shadow-patriotic">
+        <Card className={`border-0 ${
+          theme === 'independence-day' ? 'shadow-patriotic' : 'shadow-elegant'
+        }`}>
           <CardContent className="p-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               {!isLogin && (
@@ -65,7 +78,11 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                       placeholder="Enter your full name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="pl-10 border-india-saffron/20 focus:border-india-saffron"
+                    className={`pl-10 focus:border-primary ${
+                      theme === 'independence-day' 
+                        ? 'border-india-saffron/20 focus:border-india-saffron' 
+                        : 'border-input'
+                    }`}
                       required={!isLogin}
                     />
                   </div>
@@ -85,7 +102,11 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                     placeholder="Enter your email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="pl-10 border-india-saffron/20 focus:border-india-saffron"
+                    className={`pl-10 focus:border-primary ${
+                      theme === 'independence-day' 
+                        ? 'border-india-saffron/20 focus:border-india-saffron' 
+                        : 'border-input'
+                    }`}
                     required
                   />
                 </div>
@@ -104,7 +125,11 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                     placeholder="Enter your password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="pl-10 border-india-saffron/20 focus:border-india-saffron"
+                    className={`pl-10 focus:border-primary ${
+                      theme === 'independence-day' 
+                        ? 'border-india-saffron/20 focus:border-india-saffron' 
+                        : 'border-input'
+                    }`}
                     required
                   />
                 </div>
@@ -113,7 +138,11 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
               <div className="space-y-3 pt-4">
                 <Button 
                   type="submit" 
-                  className="w-full bg-gradient-to-r from-india-saffron to-india-green hover:from-india-saffron/90 hover:to-india-green/90 text-white font-semibold shadow-patriotic"
+                  className={`w-full text-white font-semibold ${
+                    theme === 'independence-day'
+                      ? 'bg-gradient-to-r from-india-saffron to-india-green hover:from-india-saffron/90 hover:to-india-green/90 shadow-patriotic'
+                      : 'bg-primary hover:bg-primary/90'
+                  }`}
                 >
                   {isLogin ? "Sign In to BDA Portal" : "Create BDA Account"}
                 </Button>
@@ -122,7 +151,11 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                   <button
                     type="button"
                     onClick={() => setIsLogin(!isLogin)}
-                    className="text-sm text-india-saffron hover:text-india-green transition-colors font-medium"
+                    className={`text-sm font-medium transition-colors ${
+                      theme === 'independence-day'
+                        ? 'text-india-saffron hover:text-india-green'
+                        : 'text-primary hover:text-primary/80'
+                    }`}
                   >
                     {isLogin 
                       ? "Don't have an account? Sign up" 
@@ -135,9 +168,21 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
 
             <div className="mt-6 pt-4 border-t border-muted">
               <p className="text-xs text-center text-muted-foreground">
-                🎉 Independence Day Special Portal 🎉
-                <br />
-                "Unity in Diversity - Digital India"
+                {theme === 'independence-day' 
+                  ? (
+                    <>
+                      🎉 Independence Day Special Portal 🎉
+                      <br />
+                      "Unity in Diversity - Digital India"
+                    </>
+                  ) : (
+                    <>
+                      🏛️ Official Government Portal 🏛️
+                      <br />
+                      "Serve the People - Digital Karnataka"
+                    </>
+                  )
+                }
               </p>
             </div>
           </CardContent>

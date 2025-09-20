@@ -10,6 +10,7 @@ import Contact from "./pages/Contact";
 import AboutUs from "./pages/AboutUs";
 import Ongoingproject from "./pages/Ongoingproject";
 import NotFound from "./pages/NotFound";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import "./index.css";
 
 const queryClient = new QueryClient();
@@ -18,20 +19,22 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/brand-bengaluru" element={<BrandBengaluru />} />
-            <Route path="/eodb" element={<EODB />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/ongoingproject" element={<Ongoingproject />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <ThemeProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/brand-bengaluru" element={<BrandBengaluru />} />
+              <Route path="/eodb" element={<EODB />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/ongoingproject" element={<Ongoingproject />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
