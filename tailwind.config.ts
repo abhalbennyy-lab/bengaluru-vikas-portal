@@ -47,12 +47,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        gov: {
-          yellow: "hsl(var(--gov-yellow))",
-          "yellow-light": "hsl(var(--gov-yellow-light))",
-          red: "hsl(var(--gov-red))",
-          "red-dark": "hsl(var(--gov-red-dark))",
-          orange: "hsl(var(--gov-orange))",
+        india: {
+          saffron: "hsl(var(--india-saffron))",
+          "saffron-light": "hsl(var(--india-saffron-light))",
+          white: "hsl(var(--india-white))",
+          green: "hsl(var(--india-green))",
+          "green-light": "hsl(var(--india-green-light))",
+          blue: "hsl(var(--india-blue))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -69,6 +70,7 @@ export default {
         "gradient-hero": "var(--gradient-hero)",
         "gradient-nav": "var(--gradient-nav)",
         "gradient-card": "var(--gradient-card)",
+        "gradient-patriotic": "var(--gradient-patriotic)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -115,6 +117,7 @@ export default {
       boxShadow: {
         elegant: "var(--shadow-elegant)",
         glow: "var(--shadow-glow)",
+        patriotic: "var(--shadow-patriotic)",
       },
     },
   },

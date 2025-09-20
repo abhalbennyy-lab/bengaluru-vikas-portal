@@ -10,6 +10,7 @@ All colors MUST be HSL.
   html, body {
     overflow-x: hidden;
   }
+  
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -20,10 +21,11 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 221 83% 53%; /* Professional Blue */
+    /* Normal Theme - Professional Blue */
+    --primary: 221 83% 53%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 199 89% 48%; /* Cyan accent */
+    --secondary: 199 89% 48%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 220 14% 96%;
@@ -39,41 +41,71 @@ All colors MUST be HSL.
     --input: 214.3 31.8% 91.4%;
     --ring: 221 83% 53%;
     
-    /* Government Theme Colors (repurposed to blues) */
-    --gov-yellow: 199 89% 48%;
-    --gov-yellow-light: 200 89% 85%;
-    --gov-red: 221 83% 53%;
-    --gov-red-dark: 221 83% 35%;
-    --gov-orange: 217 91% 60%;
+    /* Normal Theme Colors */
+    --india-saffron: 221 83% 53%;
+    --india-saffron-light: 221 83% 70%;
+    --india-white: 0 0% 100%;
+    --india-green: 199 89% 48%;
+    --india-green-light: 199 89% 65%;
+    --india-blue: 221 83% 53%;
     
-    /* Gradients */
+    /* Normal Gradients */
     --gradient-hero: linear-gradient(135deg, hsl(221 83% 53%), hsl(217 91% 60%));
     --gradient-nav: linear-gradient(90deg, hsl(221 83% 53%), hsl(199 89% 48%));
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(45 29% 97%));
+    --gradient-patriotic: linear-gradient(135deg, hsl(221 83% 53%), hsl(199 89% 48%));
 
     --radius: 0.5rem;
-    /* Shadows */
+    /* Normal Shadows */
     --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
-    --shadow-glow: 0 0 40px hsl(var(--gov-yellow) / 0.4);
+    --shadow-glow: 0 0 40px hsl(var(--india-green) / 0.4);
+    --shadow-patriotic: 0 15px 35px -5px hsl(221 83% 53% / 0.3), 0 5px 15px -5px hsl(199 89% 48% / 0.2);
 
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Independence Day Theme */
+  [data-theme="independence-day"] {
+    /* Independence Day Theme - Indian Flag Colors */
+    --primary: 25 100% 55%; /* Saffron Orange */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 125 60% 40%; /* Indian Green */
+    --secondary-foreground: 0 0% 100%;
+
+    --accent: 25 100% 65%; /* Light Saffron */
+    --accent-foreground: 0 0% 0%;
+
+    --ring: 25 100% 55%;
+    
+    /* Independence Day Colors - Indian Flag */
+    --india-saffron: 25 100% 55%; /* Saffron/Orange */
+    --india-saffron-light: 25 100% 75%;
+    --india-white: 0 0% 100%; /* Pure White */
+    --india-green: 125 60% 40%; /* Deep Green */
+    --india-green-light: 125 60% 60%;
+    --india-blue: 221 83% 53%; /* Chakra Blue */
+    
+    /* Patriotic Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(25 100% 55%), hsl(125 60% 40%));
+    --gradient-nav: linear-gradient(90deg, hsl(25 100% 55%), hsl(0 0% 100%), hsl(125 60% 40%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(25 100% 95%));
+    --gradient-patriotic: linear-gradient(180deg, hsl(25 100% 55%) 0%, hsl(0 0% 100%) 50%, hsl(125 60% 40%) 100%);
+
+    /* Independence Day Shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
+    --shadow-glow: 0 0 40px hsl(var(--india-saffron) / 0.4);
+    --shadow-patriotic: 0 15px 35px -5px hsl(25 100% 55% / 0.3), 0 5px 15px -5px hsl(125 60% 40% / 0.2);
   }
 
   .dark {
@@ -86,16 +118,16 @@ All colors MUST be HSL.
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 45 100% 61%;
+    --primary: 25 100% 55%; /* Saffron for dark mode */
     --primary-foreground: 0 0% 0%;
 
-    --secondary: 0 84% 70%;
+    --secondary: 125 60% 50%; /* Brighter green for dark mode */
     --secondary-foreground: 0 0% 100%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 45 93% 57%;
+    --accent: 25 100% 65%;
     --accent-foreground: 0 0% 0%;
 
     --destructive: 0 62.8% 30.6%;
@@ -103,13 +135,14 @@ All colors MUST be HSL.
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 45 100% 61%;
+    --ring: 25 100% 55%;
     
-    --gov-yellow: 45 100% 61%;
-    --gov-yellow-light: 45 100% 75%;
-    --gov-red: 0 84% 70%;
-    --gov-red-dark: 0 100% 35%;
-    --gov-orange: 24 100% 60%;
+    --india-saffron: 25 100% 65%;
+    --india-saffron-light: 25 100% 80%;
+    --india-white: 0 0% 95%;
+    --india-green: 125 60% 50%;
+    --india-green-light: 125 60% 70%;
+    --india-blue: 221 83% 60%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
