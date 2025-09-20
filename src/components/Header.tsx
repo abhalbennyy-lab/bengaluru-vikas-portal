@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Home, Menu, X, Search } from "lucide-react";
 import bdaLogo from "@/assets/bda-logo.png";
+import LoginModal from "./LoginModal";
 
 const Header = () => {
   const mainLinks = [
@@ -16,25 +17,36 @@ const Header = () => {
   ];
 
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
 
   return (
     <header className="w-full sticky top-0 left-0 z-50 bg-white shadow-md">
-      {/* Top Bar */}
-      <div className="bg-[#1A237E] text-white text-[11px]">
-        <div className="container mx-auto flex items-center justify-between px-3 py-1.5">
+      {/* Top Bar - Independence Day Theme */}
+      <div className="bg-gradient-to-r from-india-saffron via-india-white to-india-green text-white text-[11px] relative overflow-hidden">
+        <div className="absolute inset-0 bg-india-saffron/80"></div>
+        <div className="container mx-auto flex items-center justify-between px-3 py-1.5 relative z-10">
           {/* Logo + Title */}
           <div className="flex items-center gap-2 min-w-0 max-w-[60%]">
             <img src={bdaLogo} alt="BDA Logo" className="h-4 w-4 rounded-sm" />
-            <span className="font-medium truncate">Bangalore Development Authority</span>
+            <span className="font-medium truncate text-white drop-shadow">
+              Bangalore Development Authority 🇮🇳
+            </span>
           </div>
 
           {/* Language + Login */}
           <div className="flex items-center gap-2">
-            <Button variant="ghost" className="h-6 px-2 text-white text-[11px] hover:bg-white/10">EN</Button>
-            <span className="text-white/50">|</span>
-            <Button variant="ghost" className="h-6 px-2 text-white text-[11px] hover:bg-white/10">ಕನ್ನಡ</Button>
-            <Button className="h-6 px-3 rounded-full bg-white/20 hover:bg-white/30 text-white text-[11px]">Login</Button>
-            <Button className="h-6 px-3 rounded-full bg-white/20 hover:bg-white/30 text-white text-[11px]">Resolve Your Issue</Button>
+            <Button variant="ghost" className="h-6 px-2 text-white text-[11px] hover:bg-white/20 font-medium">EN</Button>
+            <span className="text-white/70">|</span>
+            <Button variant="ghost" className="h-6 px-2 text-white text-[11px] hover:bg-white/20 font-medium">ಕನ್ನಡ</Button>
+            <Button 
+              onClick={() => setLoginOpen(true)}
+              className="h-6 px-3 rounded-full bg-white/30 hover:bg-white/40 text-white text-[11px] font-semibold backdrop-blur-sm border border-white/20"
+            >
+              🎉 Login
+            </Button>
+            <Button className="h-6 px-3 rounded-full bg-india-green/80 hover:bg-india-green text-white text-[11px] font-semibold backdrop-blur-sm">
+              Resolve Issue
+            </Button>
           </div>
         </div>
       </div>
@@ -62,12 +74,12 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="bg-[#1A237E] text-white">
+      {/* Navigation - Independence Day Theme */}
+      <nav className="bg-gradient-to-r from-india-saffron to-india-green text-white shadow-patriotic">
         <div className="container mx-auto flex items-center px-3 md:px-4 py-1.5 md:py-2">
           {/* Left group: Home + Links (no huge gap) */}
           <div className="hidden md:flex items-center gap-1">
-            <Button variant="ghost" className="p-2 hover:bg-white/20 text-white rounded-full">
+            <Button variant="ghost" className="p-2 hover:bg-white/20 text-white rounded-full shadow-lg">
               <Home className="h-5 w-5" />
             </Button>
             <div className="flex items-center gap-1">
@@ -75,7 +87,7 @@ const Header = () => {
                 <a
                   key={link.label}
                   href={link.href}
-                  className="px-2.5 py-2 text-[13px] font-medium hover:bg-white/10 rounded transition-colors"
+                  className="px-2.5 py-2 text-[13px] font-semibold hover:bg-white/20 rounded-lg transition-all duration-200 hover:shadow-lg backdrop-blur-sm"
                 >
                   {link.label}
                 </a>
@@ -95,12 +107,12 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="md:hidden bg-[#1A237E] px-4 py-3 space-y-2">
+          <div className="md:hidden bg-gradient-to-b from-india-saffron to-india-green px-4 py-3 space-y-2 shadow-patriotic">
             {mainLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                className="block text-sm py-2 px-3 rounded hover:bg-white/10"
+                className="block text-sm py-2 px-3 rounded-lg hover:bg-white/20 font-semibold backdrop-blur-sm transition-all"
               >
                 {link.label}
               </a>
@@ -108,6 +120,9 @@ const Header = () => {
           </div>
         )}
       </nav>
+
+      {/* Login Modal */}
+      <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
     </header>
   );
 };
