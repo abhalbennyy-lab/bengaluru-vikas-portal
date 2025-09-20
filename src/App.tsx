@@ -14,25 +14,27 @@ import "./index.css";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/brand-bengaluru" element={<BrandBengaluru />} />
-          <Route path="/eodb" element={<EODB />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/ongoingproject" element={<Ongoingproject />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/brand-bengaluru" element={<BrandBengaluru />} />
+            <Route path="/eodb" element={<EODB />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/ongoingproject" element={<Ongoingproject />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;
