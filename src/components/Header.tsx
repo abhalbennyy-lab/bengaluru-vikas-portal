@@ -5,7 +5,7 @@ import bdaLogo from "@/assets/bda-logo.png";
 
 const Header = () => {
   const mainLinks = [
-    { label: "ABOUT US", href: "#about" },
+    { label: "ABOUT US", href: "/about-us" },
     { label: "RTI", href: "#rti" },
     { label: "SECTIONS", href: "#sections" },
     { label: "IPGRS", href: "#ipgrs" },
