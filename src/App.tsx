@@ -25,6 +25,7 @@ import PhotoGallery from "./pages/PhotoGallery";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { TranslationProvider } from "./contexts/TranslationContext";
 import "./index.css";
+import Login from "./pages/Login"; // Added import statement for Login page
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,10 @@ function App() {
               <Route path="/news" element={<NewsList />} />
               <Route path="/news/:id" element={<NewsDetail />} />
               <Route path="/photo-gallery" element={<PhotoGallery />} />
+              {/* Public Routes */}
+              <Route path="/" element={<Index />} />
+              <Route path="/news" element={<NewsList />} />
+              <Route path="/news/:id" element={<NewsDetail />} />
               <Route path="/brand-bengaluru" element={<BrandBengaluru />} />
               <Route path="/eodb" element={<EODB />} />
               <Route path="/contact" element={<Contact />} />
@@ -57,6 +62,9 @@ function App() {
                   <AdminLayout />
                 </ProtectedRoute>
               }>
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<Login />} />
+              <Route path="/admin" element={<AdminLayout />}>
                 <Route path="banner" element={<HeroAdmin />} />
                 <Route path="sub-admins" element={<SubAdmins />} />
                 <Route path="super-email" element={<SuperAdminEmail />} />
@@ -65,6 +73,9 @@ function App() {
               </Route>
 
               {/* Catch-all */}
+              </Route>
+
+              {/* Catch-All */}
               <Route path="*" element={<NotFound />} />
             </Routes>
             </BrowserRouter>
