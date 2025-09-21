@@ -53,6 +53,7 @@ const NewsSection = () => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       const parsedRaw = raw ? (JSON.parse(raw) as any[]) : [];
+      
       // Normalize records from storage (handle legacy shapes)
       const normalized: NewsItem[] = parsedRaw
         .map((n) => {
@@ -85,11 +86,10 @@ const NewsSection = () => {
 
       // Show newly added items first, then fall back to seeded defaults
       if (normalized.length > 0) {
-        const combined = [...normalized, ...defaultItems];
-        return combined.slice(0, 6);
+        return normalized.slice(0, 6);
       }
       return defaultItems.slice(0, 6);
-    } catch {
+    } catch (error) {
       return defaultItems.slice(0, 6);
     }
   };
@@ -97,24 +97,28 @@ const NewsSection = () => {
 
   // Live update when admin changes news or storage changes in another tab
   useEffect(() => {
-    const handler = () => setNewsItems(getNews());
+    const handler = () => {
+      console.log("[NewsSection] Custom event received, refreshing news");
+      setNewsItems(getNews());
+    };
     const storageHandler = (e: StorageEvent) => {
-      if (e.key === STORAGE_KEY) setNewsItems(getNews());
+      if (e.key === STORAGE_KEY) {
+        console.log("[NewsSection] Storage event received, refreshing news");
+        setNewsItems(getNews());
+      }
     };
     window.addEventListener("bvp:news:update", handler);
     window.addEventListener("storage", storageHandler);
+    
+    // Also refresh on component mount
+    setNewsItems(getNews());
+    
     return () => {
       window.removeEventListener("bvp:news:update", handler);
       window.removeEventListener("storage", storageHandler);
     };
   }, []);
 
-  // Debug log current items whenever they change
-  useEffect(() => {
-    try {
-      console.log("[NewsSection] Loaded items:", newsItems);
-    } catch {}
-  }, [newsItems]);
 
   return (
     <section className="py-16 bg-gradient-to-b from-white to-muted/40">
@@ -127,7 +131,12 @@ const NewsSection = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {newsItems.map((item, index) => (
+          {newsItems.length === 0 ? (
+            <div className="col-span-full text-center py-8">
+              <p className="text-gray-500">No news items found. Check console for debug info.</p>
+            </div>
+          ) : (
+            newsItems.map((item, index) => (
             <Card key={index} className="bg-white/90 backdrop-blur ring-1 ring-black/5 hover:shadow-lg transition-shadow cursor-pointer rounded-xl overflow-hidden">
               <div className="aspect-video relative overflow-hidden">
                 <img
@@ -167,7 +176,8 @@ const NewsSection = () => {
                 </div>
               </CardContent>
             </Card>
-          ))}
+            ))
+          )}
         </div>
 
         <div className="text-center mt-10">

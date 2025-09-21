@@ -4,6 +4,7 @@ import { Home, Menu, X, Search, Palette } from "lucide-react";
 import bdaLogo from "@/assets/bda-logo.png";
 import LoginModal from "./LoginModal";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 const Header = () => {
   const mainLinks = [
@@ -13,13 +14,23 @@ const Header = () => {
     { label: "IPGRS", href: "#ipgrs" },
     { label: "ONLINE SERVICES", href: "/#project" },
     { label: "ONGOING PROJECTS", href: "/ongoingproject" },
+    { label: "PHOTO GALLERY", href: "/photo-gallery" },
     { label: "EODB", href: "/eodb" },
     { label: "CONTACT US", href: "/contact" },
   ];
 
+  const handleTranslate = (lang: string) => {
+    const url = encodeURIComponent(window.location.href);
+    window.open(
+      `https://translate.google.com/translate?sl=auto&tl=${lang}&u=${url}`,
+      "_blank"
+    );
+  };
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { language, setLanguage } = useTranslation();
 
   return (
     <header className="w-full sticky top-0 left-0 z-50 bg-white shadow-md">
@@ -43,9 +54,40 @@ const Header = () => {
 
           {/* Language + Login + Theme Toggle */}
           <div className="flex items-center gap-2">
-            <Button variant="ghost" className="h-6 px-2 text-white text-[11px] hover:bg-white/20 font-medium">EN</Button>
+            <Button 
+              variant="ghost" 
+              className={`h-6 px-2 text-[11px] font-medium ${
+                language === 'en' 
+                  ? 'bg-white/30 text-white' 
+                  : 'text-white hover:bg-white/20'
+              }`}
+              onClick={() => {
+                console.log('EN button clicked');
+                console.log('Current language before change:', language);
+                setLanguage('en');
+                console.log('setLanguage("en") called');
+              }}
+            >
+              ENGLISH
+            </Button>
             <span className="text-white/70">|</span>
-            <Button variant="ghost" className="h-6 px-2 text-white text-[11px] hover:bg-white/20 font-medium">ಕನ್ನಡ</Button>
+            <Button 
+              variant="ghost" 
+              className={`h-6 px-2 text-[11px] font-medium ${
+                language === 'kn' 
+                  ? 'bg-white/30 text-white' 
+                  : 'text-white hover:bg-white/20'
+              }`}
+              onClick={() => {
+                console.log('Kannada button clicked');
+                console.log('Current language before change:', language);
+                setLanguage('kn');
+                console.log('setLanguage("kn") called');
+              }}
+            >
+              ಕನ್ನಡ
+            </Button>
+            <Button   onClick={() => handleTranslate("kn")} variant="ghost" className="h-6 px-2 text-white text-[11px] hover:bg-white/20 font-medium">ಕನ್ನಡ</Button>
             <Button 
               onClick={toggleTheme}
               className="h-6 px-3 rounded-full bg-white/30 hover:bg-white/40 text-white text-[11px] font-semibold backdrop-blur-sm border border-white/20 flex items-center gap-1"
