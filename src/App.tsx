@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Index from "./pages/Index";
 import BrandBengaluru from "./pages/BrandBengaluru";
 import EODB from "./pages/EODB";
@@ -10,6 +11,9 @@ import Contact from "./pages/Contact";
 import AboutUs from "./pages/AboutUs";
 import Ongoingproject from "./pages/Ongoingproject";
 import NotFound from "./pages/NotFound";
+import NewsList from "./pages/NewsList";
+import NewsDetail from "./pages/NewsDetail";
+
 import AdminLayout from "./admin/AdminLayout";
 import AdminLogin from "./admin/AdminLogin";
 import SetupDemo from "./admin/SetupDemo";
@@ -18,8 +22,6 @@ import SubAdmins from "./admin/SubAdmins";
 import SuperAdminEmail from "./admin/SuperAdminEmail";
 import NewsAdmin from "./admin/NewsAdmin";
 import PhotoGalleryAdmin from "./admin/PhotoGalleryAdmin";
-import NewsList from "./pages/NewsList";
-import NewsDetail from "./pages/NewsDetail";
 import PhotoGallery from "./pages/PhotoGallery";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { TranslationProvider } from "./contexts/TranslationContext";

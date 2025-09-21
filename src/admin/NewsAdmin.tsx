@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,14 +11,17 @@ type NewsItem = {
   id: string;
   title: string;
   description: string;
-  category: string; // type
+  category: string;
   imageUrl: string;
-  month: string; // e.g., "Jan", "February"
+  month: string;
   year: number;
   createdAt: number;
 };
 
 const STORAGE_KEY = "bvp.news.items";
+
+// Default fallback items (can be empty or some sample news)
+const DEFAULT_ITEMS: NewsItem[] = [];
 
 const NewsAdmin = () => {
   const { toast } = useToast();
@@ -28,15 +31,21 @@ const NewsAdmin = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState<string>("");
+
   const [items, setItems] = useState<NewsItem[]>(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as NewsItem[]) : [];
+      if (raw) {
+        const parsed = JSON.parse(raw) as NewsItem[];
+        return parsed.length > 0 ? parsed : DEFAULT_ITEMS;
+      }
+      return DEFAULT_ITEMS;
     } catch {
-      return [];
+      return DEFAULT_ITEMS;
     }
   });
 
+  // Save to localStorage whenever items change
   useEffect(() => {
     try {
       console.log("[NewsAdmin] Saving items to localStorage:", items);
@@ -48,29 +57,20 @@ const NewsAdmin = () => {
     }
   }, [items]);
 
-  const handleFile = (file: File | null) => {
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = typeof reader.result === "string" ? reader.result : "";
-      setImageUrl(result);
-    };
-    reader.readAsDataURL(file);
-  };
-
   const addNews = () => {
     const yr = parseInt(year, 10);
     if (!title.trim() || !description.trim() || !category.trim() || !imageUrl.trim() || !month.trim() || isNaN(yr)) {
       toast({ title: "Missing fields", description: "Please fill all fields correctly." });
       return;
     }
+
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     const item: NewsItem = {
       id,
       title: title.trim(),
       description: description.trim(),
       category: category.trim(),
-      imageUrl: imageUrl.trim(),
+      imageUrl: imageUrl.trim(), // stores Google Drive or external link
       month: month.trim(),
       year: yr,
       createdAt: Date.now(),
@@ -92,7 +92,7 @@ const NewsAdmin = () => {
 
   const removeNews = (id: string) => {
     setItems((prev) => prev.filter((i) => i.id !== id));
-    toast({ title: "Removed", description: id });
+    toast({ title: "Removed", description: "News item deleted." });
   };
 
   return (
@@ -128,11 +128,14 @@ const NewsAdmin = () => {
               <Label htmlFor="news-year">Year</Label>
               <Input id="news-year" type="number" value={year} onChange={(e) => setYear(e.target.value)} placeholder="2025" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="news-image-url">Image URL</Label>
-              <Input id="news-image-url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://..." />
-              <div className="text-[11px] text-muted-foreground">Or upload below. If an external URL requires auth and returns 401, uploads avoid that by embedding the image.</div>
-              <Input type="file" accept="image/*" onChange={(e) => handleFile(e.target.files?.[0] ?? null)} />
+            <div className="space-y-2 sm:col-span-2">
+              <Label htmlFor="news-image-url">Image URL (Google Drive link)</Label>
+              <Input
+                id="news-image-url"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                placeholder="Paste Google Drive or image link"
+              />
             </div>
             <div className="flex items-end">
               <Button onClick={addNews}>Add</Button>
@@ -148,11 +151,15 @@ const NewsAdmin = () => {
                 <img src={n.imageUrl} alt={n.title} className="w-28 h-20 object-cover rounded" />
                 <div className="min-w-0 flex-1">
                   <div className="text-sm font-medium truncate">{n.title}</div>
-                  <div className="text-xs text-muted-foreground truncate">{n.category} · {n.month} {n.year}</div>
+                  <div className="text-xs text-muted-foreground truncate">
+                    {n.category} · {n.month} {n.year}
+                  </div>
                   <div className="text-xs text-muted-foreground line-clamp-2">{n.description}</div>
                 </div>
                 <div className="flex items-center">
-                  <Button variant="destructive" onClick={() => removeNews(n.id)}>Delete</Button>
+                  <Button variant="destructive" onClick={() => removeNews(n.id)}>
+                    Delete
+                  </Button>
                 </div>
               </div>
             ))}
@@ -164,5 +171,3 @@ const NewsAdmin = () => {
 };
 
 export default NewsAdmin;
-
-
