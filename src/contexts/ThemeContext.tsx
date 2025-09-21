@@ -11,7 +11,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = useState<Theme>('independence-day');
+  const [theme, setThemeState] = useState<Theme>('normal');
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);

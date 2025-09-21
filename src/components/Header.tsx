@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Home, Menu, X, Search, Palette } from "lucide-react";
+import { Home, Menu, X, Search } from "lucide-react";
 import bdaLogo from "@/assets/bda-logo.png";
 import LoginModal from "./LoginModal";
-import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "@/contexts/TranslationContext";
 
 const Header = () => {
@@ -29,30 +28,22 @@ const Header = () => {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme();
   const { language, setLanguage } = useTranslation();
 
   return (
     <header className="w-full sticky top-0 left-0 z-50 bg-white shadow-md">
-      {/* Top Bar - Dynamic Theme */}
-      <div className={`text-white text-[11px] relative overflow-hidden ${
-        theme === 'independence-day' 
-          ? 'bg-gradient-to-r from-india-saffron via-india-white to-india-green' 
-          : 'bg-[#1A237E]'
-      }`}>
-        {theme === 'independence-day' && (
-          <div className="absolute inset-0 bg-india-saffron/80"></div>
-        )}
+      {/* Top Bar */}
+      <div className="bg-[#1A237E] text-white text-[11px] relative overflow-hidden">
         <div className="container mx-auto flex items-center justify-between px-3 py-1.5 relative z-10">
           {/* Logo + Title */}
           <div className="flex items-center gap-2 min-w-0 max-w-[60%]">
             <img src={bdaLogo} alt="BDA Logo" className="h-4 w-4 rounded-sm" />
             <span className="font-medium truncate text-white drop-shadow">
-              Bangalore Development Authority {theme === 'independence-day' ? '🇮🇳' : ''}
+              Bangalore Development Authority
             </span>
           </div>
 
-          {/* Language + Login + Theme Toggle */}
+          {/* Language + Login */}
           <div className="flex items-center gap-2">
             <Button 
               variant="ghost" 
@@ -61,12 +52,7 @@ const Header = () => {
                   ? 'bg-white/30 text-white' 
                   : 'text-white hover:bg-white/20'
               }`}
-              onClick={() => {
-                console.log('EN button clicked');
-                console.log('Current language before change:', language);
-                setLanguage('en');
-                console.log('setLanguage("en") called');
-              }}
+              onClick={() => setLanguage('en')}
             >
               ENGLISH
             </Button>
@@ -78,39 +64,25 @@ const Header = () => {
                   ? 'bg-white/30 text-white' 
                   : 'text-white hover:bg-white/20'
               }`}
-              onClick={() => {
-                console.log('Kannada button clicked');
-                console.log('Current language before change:', language);
-                setLanguage('kn');
-                console.log('setLanguage("kn") called');
-              }}
+              onClick={() => setLanguage('kn')}
             >
               ಕನ್ನಡ
             </Button>
-            <Button   onClick={() => handleTranslate("kn")} variant="ghost" className="h-6 px-2 text-white text-[11px] hover:bg-white/20 font-medium">ಕನ್ನಡ</Button>
-            <Button 
-              onClick={toggleTheme}
-              className="h-6 px-3 rounded-full bg-white/30 hover:bg-white/40 text-white text-[11px] font-semibold backdrop-blur-sm border border-white/20 flex items-center gap-1"
+            <Button
+              onClick={() => handleTranslate("kn")}
+              variant="ghost"
+              className="h-6 px-2 text-white text-[11px] hover:bg-white/20 font-medium"
             >
-              <Palette className="h-3 w-3" />
-              {theme === 'independence-day' ? 'Normal' : 'Festive'}
+              ಕನ್ನಡ
             </Button>
             <Button 
               onClick={() => setLoginOpen(true)}
-              className={`h-6 px-3 rounded-full text-white text-[11px] font-semibold backdrop-blur-sm ${
-                theme === 'independence-day'
-                  ? 'bg-white/30 hover:bg-white/40 border border-white/20'
-                  : 'bg-white/20 hover:bg-white/30'
-              }`}
+              className="h-6 px-3 rounded-full text-white text-[11px] font-semibold backdrop-blur-sm bg-white/20 hover:bg-white/30"
             >
-              {theme === 'independence-day' ? '🎉 Login' : 'Login'}
+              Login
             </Button>
-            <Button className={`h-6 px-3 rounded-full text-white text-[11px] font-semibold backdrop-blur-sm ${
-              theme === 'independence-day'
-                ? 'bg-india-green/80 hover:bg-india-green'
-                : 'bg-white/20 hover:bg-white/30'
-            }`}>
-              {theme === 'independence-day' ? 'Resolve Issue' : 'Resolve Your Issue'}
+            <Button className="h-6 px-3 rounded-full text-white text-[11px] font-semibold backdrop-blur-sm bg-white/20 hover:bg-white/30">
+              Resolve Your Issue
             </Button>
           </div>
         </div>
@@ -121,10 +93,6 @@ const Header = () => {
         <div className="container mx-auto flex flex-wrap justify-between items-center gap-2 overflow-x-hidden">
           <div className="flex items-center gap-2 min-w-0">
             <img src={bdaLogo} alt="BDA Logo" className="h-10 md:h-12" />
-            <div className="min-w-0">
-              {/* <h1 className="text-base md:text-2xl font-bold text-gray-900 leading-tight line-clamp-2 max-w-[70vw] md:max-w-none">BANGALORE DEVELOPMENT AUTHORITY</h1> */}
-              {/* <p className="text-gray-600 text-xs md:text-sm truncate">Urban Development Department</p> */}
-            </div>
           </div>
 
           {/* Search Box - hidden on mobile */}
@@ -139,14 +107,10 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Navigation - Dynamic Theme */}
-      <nav className={`text-white ${
-        theme === 'independence-day' 
-          ? 'bg-gradient-to-r from-india-saffron to-india-green shadow-patriotic' 
-          : 'bg-[#1A237E]'
-      }`}>
+      {/* Navigation */}
+      <nav className="bg-[#1A237E] text-white">
         <div className="container mx-auto flex items-center px-3 md:px-4 py-1.5 md:py-2">
-          {/* Left group: Home + Links (no huge gap) */}
+          {/* Left group: Home + Links */}
           <div className="hidden md:flex items-center gap-1">
             <Button variant="ghost" className="p-2 hover:bg-white/20 text-white rounded-full shadow-lg">
               <Home className="h-5 w-5" />
@@ -164,7 +128,7 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Mobile Menu Toggle on the right */}
+          {/* Mobile Menu Toggle */}
           <Button
             onClick={() => setMobileOpen(!mobileOpen)}
             variant="ghost"
@@ -176,20 +140,12 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div className={`md:hidden px-4 py-3 space-y-2 ${
-            theme === 'independence-day' 
-              ? 'bg-gradient-to-b from-india-saffron to-india-green shadow-patriotic' 
-              : 'bg-[#1A237E]'
-          }`}>
+          <div className="md:hidden px-4 py-3 space-y-2 bg-[#1A237E]">
             {mainLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                className={`block text-sm py-2 px-3 rounded-lg font-semibold transition-all ${
-                  theme === 'independence-day'
-                    ? 'hover:bg-white/20 backdrop-blur-sm'
-                    : 'hover:bg-white/10'
-                }`}
+                className="block text-sm py-2 px-3 rounded-lg font-semibold transition-all hover:bg-white/10"
               >
                 {link.label}
               </a>
