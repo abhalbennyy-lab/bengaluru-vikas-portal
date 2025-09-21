@@ -1,76 +1,268 @@
-import development1 from "@/assets/Komaghatta 2.jpg";
-import development2 from "@/assets/Kommaghatta all buildings.jpg";
-import development3 from "@/assets/Bda night view.jpg";
-import dev4 from "@/assets/Hennur.jpg";
-import dev5 from "@/assets/Narayanapura 1.jpg";
-import dev6 from "@/assets/HBR Layout.jpg";
+import { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Image, 
+  ChevronLeft, 
+  ChevronRight, 
+  Maximize2, 
+  Calendar,
+  Eye
+} from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
+interface PhotoGalleryItem {
+  id: string;
+  image: string;
+  heading: string;
+  subheading: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
-const PhotoGallerySection = () => {
-  const galleryImages = [
-    {
-      image: development1,
-      title: "Konadasapura Development",
-      description: "Modern residential complex"
-    },
-    {
-      image: development2,
-      title: "Green Spaces",
-      description: "Parks and recreational areas"
-    },
-    {
-      image: development3,
-      title: "Infrastructure Development",
-      description: "Road and utility development"
-    },
-    {
-      image: dev4,
-      title: "Housing Projects",
-      description: "Quality residential units"
-    },
-    {
-      image: dev5,
-      title: "Urban Planning",
-      description: "Systematic city development"
-    },
-    {
-      image: dev6,
-      title: "Modern Amenities",
-      description: "State-of-the-art facilities"
-    }
-  ];
+interface PhotoGallerySectionProps {
+  title?: string;
+  subtitle?: string;
+  maxItems?: number;
+  showViewAll?: boolean;
+}
+
+const PhotoGallerySection = ({ 
+  title = "Photo Gallery", 
+  subtitle = "Explore our collection of images",
+  maxItems = 6,
+  showViewAll = true
+}: PhotoGallerySectionProps) => {
+  const [photos, setPhotos] = useState<PhotoGalleryItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedPhoto, setSelectedPhoto] = useState<PhotoGalleryItem | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Load photos from localStorage
+  useEffect(() => {
+    const loadPhotos = () => {
+      try {
+        const savedPhotos = localStorage.getItem('photoGallery');
+        if (savedPhotos) {
+          const parsedPhotos = JSON.parse(savedPhotos);
+          setPhotos(parsedPhotos.slice(0, maxItems));
+        }
+      } catch (error) {
+        console.error('Error loading photos:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadPhotos();
+  }, [maxItems]);
+
+  const handlePhotoClick = (photo: PhotoGalleryItem, index: number) => {
+    setSelectedPhoto(photo);
+    setCurrentIndex(index);
+    setIsDialogOpen(true);
+  };
+
+  const handlePrevious = () => {
+    const newIndex = currentIndex > 0 ? currentIndex - 1 : photos.length - 1;
+    setCurrentIndex(newIndex);
+    setSelectedPhoto(photos[newIndex]);
+  };
+
+  const handleNext = () => {
+    const newIndex = currentIndex < photos.length - 1 ? currentIndex + 1 : 0;
+    setCurrentIndex(newIndex);
+    setSelectedPhoto(photos[newIndex]);
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-IN', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{title}</h2>
+            <p className="text-lg text-gray-600">{subtitle}</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="animate-pulse">
+                <div className="bg-gray-300 h-64 rounded-lg"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (photos.length === 0) {
+    return (
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <Image className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{title}</h2>
+            <p className="text-lg text-gray-600 mb-8">{subtitle}</p>
+            <p className="text-gray-500">No photos available at the moment.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className="py-16 bg-background">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-foreground mb-4">Photo Gallery</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Explore our development projects and infrastructure initiatives across Bangalore
-          </p>
-        </div>
+    <>
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{title}</h2>
+            <p className="text-lg text-gray-600">{subtitle}</p>
+          </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {galleryImages.map((item, index) => (
-            <div key={index} className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
-              <div className="aspect-[4/3] relative overflow-hidden">
-                <img 
-                  src={item.image} 
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                  <div className="p-4 text-white">
-                    <h3 className="font-bold text-lg mb-1">{item.title}</h3>
-                    <p className="text-sm text-gray-200">{item.description}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {photos.map((photo, index) => (
+              <Card 
+                key={photo.id} 
+                className="group cursor-pointer overflow-hidden hover:shadow-lg transition-all duration-300"
+                onClick={() => handlePhotoClick(photo, index)}
+              >
+                <div className="relative">
+                  <img
+                    src={photo.image}
+                    alt={photo.heading}
+                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  
+                  {/* Overlay with heading and subheading */}
+                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="text-center text-white p-4">
+                      <h3 className="text-lg font-semibold mb-2">{photo.heading}</h3>
+                      {photo.subheading && (
+                        <p className="text-sm opacity-90">{photo.subheading}</p>
+                      )}
+                    </div>
                   </div>
+
+                  {/* View icon overlay */}
+                  <div className="absolute top-3 right-3 bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Eye className="w-4 h-4 text-white" />
+                  </div>
+                </div>
+                
+                <CardContent className="p-4">
+                  <h3 className="font-semibold text-lg mb-2 line-clamp-2">{photo.heading}</h3>
+                  {photo.subheading && (
+                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">{photo.subheading}</p>
+                  )}
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      <span>{formatDate(photo.createdAt)}</span>
+                    </div>
+                    <Badge variant="secondary" className="text-xs">
+                      Gallery
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {showViewAll && photos.length >= maxItems && (
+            <div className="text-center mt-8">
+              <Button variant="outline" size="lg">
+                View All Photos
+              </Button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Photo Modal */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
+          <DialogHeader>
+            <DialogTitle className="text-center">
+              {selectedPhoto?.heading}
+            </DialogTitle>
+          </DialogHeader>
+          
+          {selectedPhoto && (
+            <div className="space-y-4">
+              {/* Image with navigation */}
+              <div className="relative">
+                <img
+                  src={selectedPhoto.image}
+                  alt={selectedPhoto.heading}
+                  className="w-full h-96 object-cover rounded-lg"
+                />
+                
+                {/* Navigation buttons */}
+                {photos.length > 1 && (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100"
+                      onClick={handlePrevious}
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100"
+                      onClick={handleNext}
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </Button>
+                  </>
+                )}
+
+                {/* Photo counter */}
+                {photos.length > 1 && (
+                  <div className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
+                    {currentIndex + 1} / {photos.length}
+                  </div>
+                )}
+              </div>
+
+              {/* Photo details */}
+              <div className="space-y-3">
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">{selectedPhoto.heading}</h3>
+                  {selectedPhoto.subheading && (
+                    <p className="text-gray-600">{selectedPhoto.subheading}</p>
+                  )}
+                </div>
+                
+                <div className="flex items-center justify-between text-sm text-gray-500 pt-3 border-t">
+                  <div className="flex items-center gap-1">
+                    <Calendar className="w-4 h-4" />
+                    <span>Added on {formatDate(selectedPhoto.createdAt)}</span>
+                  </div>
+                  {selectedPhoto.updatedAt !== selectedPhoto.createdAt && (
+                    <Badge variant="secondary" className="text-xs">
+                      Updated
+                    </Badge>
+                  )}
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

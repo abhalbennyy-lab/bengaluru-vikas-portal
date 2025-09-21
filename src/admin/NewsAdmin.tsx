@@ -39,9 +39,13 @@ const NewsAdmin = () => {
 
   useEffect(() => {
     try {
+      console.log("[NewsAdmin] Saving items to localStorage:", items);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      console.log("[NewsAdmin] Dispatched bvp:news:update event");
       window.dispatchEvent(new Event("bvp:news:update"));
-    } catch {}
+    } catch (error) {
+      console.error("[NewsAdmin] Error saving to localStorage:", error);
+    }
   }, [items]);
 
   const handleFile = (file: File | null) => {
@@ -71,11 +75,12 @@ const NewsAdmin = () => {
       year: yr,
       createdAt: Date.now(),
     };
-    setItems((prev) => [item, ...prev]);
-    // Debug log for verification
-    try {
-      console.log("[NewsAdmin] Added news:", item);
-    } catch {}
+    console.log("[NewsAdmin] Adding news item:", item);
+    setItems((prev) => {
+      const newItems = [item, ...prev];
+      console.log("[NewsAdmin] Updated items array:", newItems);
+      return newItems;
+    });
     setTitle("");
     setDescription("");
     setCategory("");
