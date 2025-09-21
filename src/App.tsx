@@ -28,10 +28,18 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { TranslationProvider } from "./contexts/TranslationContext";
 import "./index.css";
 import Login from "./pages/Login"; // Added import statement for Login page
+import { useDataStore } from './store/store';
+import { useEffect } from "react";
+
 
 const queryClient = new QueryClient();
 
 function App() {
+  const fetchData = useDataStore((state) => state.fetchData);
+
+  useEffect(() => {
+    fetchData(); // fetch when app starts
+  }, [fetchData]);
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
