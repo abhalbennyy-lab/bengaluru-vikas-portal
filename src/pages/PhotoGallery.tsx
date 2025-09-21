@@ -36,18 +36,110 @@ const PhotoGallery = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-  // Load photos from localStorage
+  // Sample photos data
+  const samplePhotos: PhotoGalleryItem[] = [
+    {
+      id: "1",
+      image: "/Projects/BDA Office/bda day view.jpg",
+      heading: "BDA Office - Day View",
+      subheading: "Modern architecture of Bangalore Development Authority office building",
+      createdAt: "2024-01-15",
+      updatedAt: "2024-01-15"
+    },
+    {
+      id: "2",
+      image: "/Projects/BDA Office/Bda night view.jpg",
+      heading: "BDA Office - Night View",
+      subheading: "Illuminated BDA office building showcasing urban development",
+      createdAt: "2024-01-16",
+      updatedAt: "2024-01-16"
+    },
+    {
+      id: "3",
+      image: "/Projects/Hebbal Flyover/Hebbal Flyover - Top Down.jpg",
+      heading: "Hebbal Flyover - Aerial View",
+      subheading: "Bird's eye view of the iconic Hebbal flyover infrastructure",
+      createdAt: "2024-02-10",
+      updatedAt: "2024-02-10"
+    },
+    {
+      id: "4",
+      image: "/Projects/Military Memorial/military memorial.jpg",
+      heading: "Military Memorial",
+      subheading: "Dedicated memorial honoring our brave military personnel",
+      createdAt: "2024-02-15",
+      updatedAt: "2024-02-15"
+    },
+    {
+      id: "5",
+      image: "/Projects/Layouts/Nadaprabhu Kempegowda Layout (NPKL)/Block 1.jpg",
+      heading: "NPKL Block 1",
+      subheading: "Nadaprabhu Kempegowda Layout - Modern residential development",
+      createdAt: "2024-03-01",
+      updatedAt: "2024-03-01"
+    },
+    {
+      id: "6",
+      image: "/Projects/Layouts/Arkavathy Layout/HBR Layout.jpg",
+      heading: "HBR Layout - Arkavathy",
+      subheading: "Well-planned residential layout in Arkavathy development",
+      createdAt: "2024-03-10",
+      updatedAt: "2024-03-10"
+    },
+    {
+      id: "7",
+      image: "/Projects/Alur/Alur.jpg",
+      heading: "Alur Development",
+      subheading: "Comprehensive development project in Alur region",
+      createdAt: "2024-03-20",
+      updatedAt: "2024-03-20"
+    },
+    {
+      id: "8",
+      image: "/Projects/Kaniminike/Kaniminike Green Buildings.jpg",
+      heading: "Kaniminike Green Buildings",
+      subheading: "Eco-friendly sustainable building development",
+      createdAt: "2024-04-05",
+      updatedAt: "2024-04-05"
+    },
+    {
+      id: "9",
+      image: "/Projects/Kommaghatta/Kommaghatta all buildings.jpg",
+      heading: "Kommaghatta Development",
+      subheading: "Complete infrastructure development in Kommaghatta area",
+      createdAt: "2024-04-15",
+      updatedAt: "2024-04-15"
+    },
+    {
+      id: "10",
+      image: "/Projects/Bellandur Lake/DJI_20250823103408_0015_D.JPG",
+      heading: "Bellandur Lake Restoration",
+      subheading: "Aerial view of the ongoing lake restoration project",
+      createdAt: "2024-05-01",
+      updatedAt: "2024-05-01"
+    }
+  ];
+
+  // Load photos
   useEffect(() => {
     const loadPhotos = () => {
       try {
+        // Try to load from localStorage first
         const savedPhotos = localStorage.getItem('photoGallery');
         if (savedPhotos) {
           const parsedPhotos = JSON.parse(savedPhotos);
           setPhotos(parsedPhotos);
           setFilteredPhotos(parsedPhotos);
+        } else {
+          // If no saved photos, use sample photos
+          setPhotos(samplePhotos);
+          setFilteredPhotos(samplePhotos);
         }
       } catch (error) {
         console.error('Error loading photos:', error);
+        // Fallback to sample photos
+        setPhotos(samplePhotos);
+        setFilteredPhotos(samplePhotos);
       } finally {
         setIsLoading(false);
       }

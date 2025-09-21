@@ -15,18 +15,18 @@ const OnlineServices = () => {
   ];
 
   const progressReports = [
-    { id: 1, subject: "NPKL Progress Report June 2025", date: "", language: "English", source: "EM Section", link: "Click Here" },
-    { id: 2, subject: "Major Arterial Road (MAR) Progress Report June 2025", date: "", language: "English", source: "EM Section", link: "Click Here" },
-    { id: 3, subject: "6-NPKL(WS&UGD) Division Progress Report for the month of June-2025 RERA", date: "", language: "English", source: "EM Section", link: "Click Here" },
-    { id: 4, subject: "6-NPKL(WS&UGD) Division Progress Report for the month of June-2025 EDP", date: "", language: "English", source: "EM Section", link: "Click Here" },
-    { id: 5, subject: "Major Arterial Road (MAR) Progress Report May-2025", date: "", language: "English", source: "EM Section", link: "Click Here" },
-    { id: 6, subject: "NPKL Progress report May-2025", date: "", language: "English", source: "EM Section", link: "Click Here" },
-    { id: 7, subject: "Major Arterial Road (MAR) Progress Report April-2025", date: "", language: "English", source: "EM Section", link: "Click Here" },
-    { id: 8, subject: "NPKL Progress report April-2025", date: "", language: "English", source: "EM Section", link: "Click Here" },
-    { id: 9, subject: "Major Arterial Road (MAR) Progress Report March-2025", date: "", language: "English", source: "EM Section", link: "Click Here" },
-    { id: 10, subject: "NPKL Progress report March-2025", date: "", language: "English", source: "EM Section", link: "Click Here" },
-    { id: 11, subject: "Major Arterial Road (MAR) Progress Report February-2025", date: "", language: "English", source: "EM Section", link: "Click Here" },
-    { id: 12, subject: "NPKL Progress report February-2025", date: "", language: "English", source: "EM Section", link: "Click Here" },
+    { id: 1, subject: "NPKL Progress Report June 2025", date: "", language: "English", source: "EM Section", link: "Click Here", pdfFile: "/NPKL/June 2025 LAYOUT PROGRESS_0001_0001.pdf" },
+    { id: 2, subject: "Major Arterial Road (MAR) Progress Report June 2025", date: "", language: "English", source: "EM Section", link: "Click Here", pdfFile: "/NPKL/Major Arterial Road (MAR) Progress Report June 2025.pdf" },
+    { id: 3, subject: "6-NPKL(WS&UGD) Division Progress Report for the month of June-2025 RERA", date: "", language: "English", source: "EM Section", link: "Click Here", pdfFile: "/NPKL/6-NPKL(WS&UGD) Division Progress Report for the month of June-2025  RERA-67.pdf" },
+    { id: 4, subject: "6-NPKL(WS&UGD) Division Progress Report for the month of June-2025 EDP", date: "", language: "English", source: "EM Section", link: "Click Here", pdfFile: "/NPKL/6-NPKL(WS&UGD) Division Progress Report for the month of June-2025 EDP-68.pdf" },
+    { id: 5, subject: "Major Arterial Road (MAR) Progress Report May-2025", date: "", language: "English", source: "EM Section", link: "Click Here", pdfFile: "/NPKL/Major Arterial Road (MAR) Progress Report May-2025.pdf" },
+    { id: 6, subject: "NPKL Progress report May-2025", date: "", language: "English", source: "EM Section", link: "Click Here", pdfFile: "/NPKL/NPKL Progress report May-2025.pdf" },
+    { id: 7, subject: "Major Arterial Road (MAR) Progress Report April-2025", date: "", language: "English", source: "EM Section", link: "Click Here", pdfFile: "/NPKL/Major Arterial Road (MAR) Progress Report April-2025.pdf" },
+    { id: 8, subject: "NPKL Progress report April-2025", date: "", language: "English", source: "EM Section", link: "Click Here", pdfFile: "/NPKL/NPKL Progress report April-2025.pdf" },
+    { id: 9, subject: "Major Arterial Road (MAR) Progress Report March-2025", date: "", language: "English", source: "EM Section", link: "Click Here", pdfFile: "/NPKL/Major Arterial Road (MAR) Progress Report March-2025.pdf" },
+    { id: 10, subject: "NPKL Progress report March-2025", date: "", language: "English", source: "EM Section", link: "Click Here", pdfFile: "/NPKL/NPKL Progress report March-2025.pdf" },
+    { id: 11, subject: "Major Arterial Road (MAR) Progress Report February-2025", date: "", language: "English", source: "EM Section", link: "Click Here", pdfFile: "/NPKL/Major Arterial Road (MAR) Progress Report February-2025.pdf" },
+    { id: 12, subject: "NPKL Progress report February-2025", date: "", language: "English", source: "EM Section", link: "Click Here", pdfFile: "/NPKL/NPKL Progress report February-2025.pdf" },
   ];
 
   return (
@@ -99,7 +99,11 @@ const OnlineServices = () => {
                     <td className="border border-gray-300 px-4 py-3 text-gray-600">{report.language}</td>
                     <td className="border border-gray-300 px-4 py-3 text-gray-600">{report.source}</td>
                     <td className="border border-gray-300 px-4 py-3">
-                      <Button variant="link" className="p-0 h-auto text-blue-600 hover:text-blue-800">
+                      <Button 
+                        variant="link" 
+                        className="p-0 h-auto text-blue-600 hover:text-blue-800"
+                        onClick={() => window.open(report.pdfFile, '_blank')}
+                      >
                         {report.link}
                       </Button>
                     </td>

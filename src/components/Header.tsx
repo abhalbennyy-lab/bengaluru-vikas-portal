@@ -87,7 +87,6 @@ const Header = () => {
             >
               ಕನ್ನಡ
             </Button>
-            <Button   onClick={() => handleTranslate("kn")} variant="ghost" className="h-6 px-2 text-white text-[11px] hover:bg-white/20 font-medium">ಕನ್ನಡ</Button>
             <Button 
               onClick={toggleTheme}
               className="h-6 px-3 rounded-full bg-white/30 hover:bg-white/40 text-white text-[11px] font-semibold backdrop-blur-sm border border-white/20 flex items-center gap-1"

@@ -10,26 +10,26 @@ const EODB = () => {
     {
       slNo: 1,
       service: "Change of Land Use",
-      applicationForm: "#",
-      userManual: "#"
+      applicationForm: "/eodb/Town Planning Section/Application Form/Change of Land Use.docx",
+      userManual: "/eodb/Town Planning Section/user manual/Change of Land Use.pdf"
     },
     {
       slNo: 2,
       service: "Approval of Layout",
-      applicationForm: "#",
-      userManual: "#"
+      applicationForm: "/eodb/Town Planning Section/Application Form/APPLICATIONfORAPPROVAL.docx",
+      userManual: "/eodb/Town Planning Section/user manual/Approval of Layout.pdf"
     },
     {
       slNo: 3,
       service: "Development Plan",
-      applicationForm: "#",
-      userManual: "#"
+      applicationForm: "/eodb/Town Planning Section/Application Form/APPLICATIONFORAPPROVALOF DEVELOPMENTPLAN.docx",
+      userManual: "/eodb/Town Planning Section/user manual/Development Plan.pdf"
     },
     {
       slNo: 4,
       service: "Amalgamation or Bifurcation of a Plot or Site",
-      applicationForm: "#",
-      userManual: "#"
+      applicationForm: "/eodb/Town Planning Section/Application Form/AMALGAMATION & BIFURCATION OF A SITE OR.docx",
+      userManual: "/eodb/Town Planning Section/user manual/Amalgamation or Bifurcation of a Plot or Site.pdf"
     }
   ];
 
@@ -37,22 +37,22 @@ const EODB = () => {
     {
       slNo: 1,
       title: "The Karnataka Town and Country Planning Act, 1961",
-      link: "#"
+      link: "/eodb/Town Planning Section-Additional Information/The Karnataka Town and Country Planning Act, 1961.pdf"
     },
     {
       slNo: 2,
       title: "Revised Master Plan 2015",
-      link: "#"
+      link: "#" // No matching file found
     },
     {
       slNo: 3,
       title: "BDA Approved Layout",
-      link: "#"
+      link: "#" // No matching file found
     },
     {
       slNo: 4,
       title: "Zonal Regulation",
-      link: "#"
+      link: "/eodb/Town Planning Section-Additional Information/Zonal Regulation.pdf"
     }
   ];
 
@@ -60,20 +60,20 @@ const EODB = () => {
     {
       slNo: 1,
       service: "Building Plan Approval",
-      applicationForm: "#",
-      userManual: "#"
+      applicationForm: "/eodb/Engineering Section/Application Form/building-plan-approval.docx",
+      userManual: "/eodb/Engineering Section/User Manual/building-panel-aproval-usermanual.pdf"
     },
     {
       slNo: 2,
       service: "Commencement Certificate",
-      applicationForm: "#",
-      userManual: "#"
+      applicationForm: "/eodb/Engineering Section/Application Form/COMMENCEMENT CERTIFICATE.docx",
+      userManual: "/eodb/Engineering Section/User Manual/COMMENCEMENT CERTIFICATE-usermanual.pdf"
     },
     {
       slNo: 3,
       service: "Occupancy Certificate",
-      applicationForm: "#",
-      userManual: "#"
+      applicationForm: "/eodb/Engineering Section/Application Form/OCCUPANCY CERTIFICATE.docx",
+      userManual: "/eodb/Engineering Section/User Manual/OCCUPANCY CERTIFICATE-usermanual.pdf"
     }
   ];
 
@@ -81,12 +81,12 @@ const EODB = () => {
     {
       slNo: 1,
       title: "Building Bye Laws",
-      link: "#"
+      link: "#" // No matching file found
     },
     {
       slNo: 2,
       title: "Fees Circular",
-      link: "#"
+      link: "#" // No matching file found
     }
   ];
 
@@ -94,34 +94,34 @@ const EODB = () => {
     {
       slNo: 1,
       service: "Possession Certificate for Sites",
-      applicationForm: "#",
-      userManual: "#",
-      abstract: "#",
-      applicationDetails: "#"
+      applicationForm: "#", // No matching file found
+      userManual: "/eodb/Seva Sindhu/Usermanual/Possession Certificate for Sites usermanual.pdf",
+      abstract: "#", // No matching file found
+      applicationDetails: "#" // No matching file found
     },
     {
       slNo: 2,
       service: "Possession Certificate for Flats",
-      applicationForm: "#",
-      userManual: "#",
-      abstract: "#",
-      applicationDetails: "#"
+      applicationForm: "#", // No matching file found
+      userManual: "/eodb/Seva Sindhu/Usermanual/Possession Certificate for Flats.pdf",
+      abstract: "#", // No matching file found
+      applicationDetails: "#" // No matching file found
     },
     {
       slNo: 3,
       service: "New e-Khata",
-      applicationForm: "#",
-      userManual: "#",
-      abstract: "#",
-      applicationDetails: "#"
+      applicationForm: "#", // No matching file found
+      userManual: "/eodb/Seva Sindhu/Usermanual/New e-Khata.pdf",
+      abstract: "#", // No matching file found
+      applicationDetails: "#" // No matching file found
     },
     {
       slNo: 4,
       service: "E-Khata Transfer",
-      applicationForm: "#",
-      userManual: "#",
-      abstract: "#",
-      applicationDetails: "#"
+      applicationForm: "#", // No matching file found
+      userManual: "/eodb/Seva Sindhu/Usermanual/E-Khata Transfer.pdf",
+      abstract: "#", // No matching file found
+      applicationDetails: "#" // No matching file found
     }
   ];
 
@@ -129,8 +129,8 @@ const EODB = () => {
     {
       slNo: 1,
       service: "Property Tax",
-      applicationForm: "#",
-      userManual: "#"
+      applicationForm: "#", // No matching file found
+      userManual: "/eodb/Property Tax Portal/Property Tax Payment User GuideNew.pdf"
     }
   ];
 
@@ -195,13 +195,25 @@ const EODB = () => {
                       <TableCell>{service.slNo}</TableCell>
                       <TableCell className="font-medium">{service.service}</TableCell>
                       <TableCell className="text-center">
-                        <Button variant="outline" size="sm" className="gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="gap-2"
+                          onClick={() => service.applicationForm !== "#" && window.open(service.applicationForm, '_blank')}
+                          disabled={service.applicationForm === "#"}
+                        >
                           <Download className="h-4 w-4" />
                           Download
                         </Button>
                       </TableCell>
                       <TableCell className="text-center">
-                        <Button variant="outline" size="sm" className="gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="gap-2"
+                          onClick={() => service.userManual !== "#" && window.open(service.userManual, '_blank')}
+                          disabled={service.userManual === "#"}
+                        >
                           <Download className="h-4 w-4" />
                           Download
                         </Button>
@@ -223,7 +235,13 @@ const EODB = () => {
                         <TableCell className="w-16">{info.slNo}</TableCell>
                         <TableCell className="font-medium">{info.title}</TableCell>
                         <TableCell className="text-center">
-                          <Button variant="outline" size="sm" className="gap-2">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="gap-2"
+                            onClick={() => info.link !== "#" && window.open(info.link, '_blank')}
+                            disabled={info.link === "#"}
+                          >
                             <ExternalLink className="h-4 w-4" />
                             Click Here
                           </Button>
@@ -259,13 +277,25 @@ const EODB = () => {
                       <TableCell>{service.slNo}</TableCell>
                       <TableCell className="font-medium">{service.service}</TableCell>
                       <TableCell className="text-center">
-                        <Button variant="outline" size="sm" className="gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="gap-2"
+                          onClick={() => service.applicationForm !== "#" && window.open(service.applicationForm, '_blank')}
+                          disabled={service.applicationForm === "#"}
+                        >
                           <Download className="h-4 w-4" />
                           Download
                         </Button>
                       </TableCell>
                       <TableCell className="text-center">
-                        <Button variant="outline" size="sm" className="gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="gap-2"
+                          onClick={() => service.userManual !== "#" && window.open(service.userManual, '_blank')}
+                          disabled={service.userManual === "#"}
+                        >
                           <Download className="h-4 w-4" />
                           Download
                         </Button>
@@ -287,7 +317,13 @@ const EODB = () => {
                         <TableCell className="w-16">{info.slNo}</TableCell>
                         <TableCell className="font-medium">{info.title}</TableCell>
                         <TableCell className="text-center">
-                          <Button variant="outline" size="sm" className="gap-2">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="gap-2"
+                            onClick={() => info.link !== "#" && window.open(info.link, '_blank')}
+                            disabled={info.link === "#"}
+                          >
                             <ExternalLink className="h-4 w-4" />
                             Click Here
                           </Button>
@@ -325,25 +361,49 @@ const EODB = () => {
                       <TableCell>{service.slNo}</TableCell>
                       <TableCell className="font-medium">{service.service}</TableCell>
                       <TableCell className="text-center">
-                        <Button variant="default" size="sm" className="gap-2">
+                        <Button 
+                          variant="default" 
+                          size="sm" 
+                          className="gap-2"
+                          onClick={() => service.applicationForm !== "#" && window.open(service.applicationForm, '_blank')}
+                          disabled={service.applicationForm === "#"}
+                        >
                           <ExternalLink className="h-4 w-4" />
                           Apply Online
                         </Button>
                       </TableCell>
                       <TableCell className="text-center">
-                        <Button variant="outline" size="sm" className="gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="gap-2"
+                          onClick={() => service.userManual !== "#" && window.open(service.userManual, '_blank')}
+                          disabled={service.userManual === "#"}
+                        >
                           <Download className="h-4 w-4" />
                           Download
                         </Button>
                       </TableCell>
                       <TableCell className="text-center">
-                        <Button variant="outline" size="sm" className="gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="gap-2"
+                          onClick={() => service.abstract !== "#" && window.open(service.abstract, '_blank')}
+                          disabled={service.abstract === "#"}
+                        >
                           <Download className="h-4 w-4" />
                           Download
                         </Button>
                       </TableCell>
                       <TableCell className="text-center">
-                        <Button variant="outline" size="sm" className="gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="gap-2"
+                          onClick={() => service.applicationDetails !== "#" && window.open(service.applicationDetails, '_blank')}
+                          disabled={service.applicationDetails === "#"}
+                        >
                           <Download className="h-4 w-4" />
                           Download
                         </Button>
@@ -378,13 +438,25 @@ const EODB = () => {
                       <TableCell>{service.slNo}</TableCell>
                       <TableCell className="font-medium">{service.service}</TableCell>
                       <TableCell className="text-center">
-                        <Button variant="default" size="sm" className="gap-2">
+                        <Button 
+                          variant="default" 
+                          size="sm" 
+                          className="gap-2"
+                          onClick={() => service.applicationForm !== "#" && window.open(service.applicationForm, '_blank')}
+                          disabled={service.applicationForm === "#"}
+                        >
                           <ExternalLink className="h-4 w-4" />
                           Pay Online
                         </Button>
                       </TableCell>
                       <TableCell className="text-center">
-                        <Button variant="outline" size="sm" className="gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="gap-2"
+                          onClick={() => service.userManual !== "#" && window.open(service.userManual, '_blank')}
+                          disabled={service.userManual === "#"}
+                        >
                           <Download className="h-4 w-4" />
                           Download
                         </Button>

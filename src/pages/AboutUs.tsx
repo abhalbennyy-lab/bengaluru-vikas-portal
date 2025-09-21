@@ -12,7 +12,8 @@ const AboutUs = () => {
       date: "1976",
       language: "En/Kn",
       source: "UDD 267 MNJ 2017",
-      download: "Click Here"
+      download: "Click Here",
+      pdfFile: "/1976.pdf"
     },
     {
       slNo: 2,
@@ -20,7 +21,8 @@ const AboutUs = () => {
       date: "17 August 2017",
       language: "En/Kn",
       source: "UDD 267 MNJ 2017",
-      download: "Click Here"
+      download: "Click Here",
+      pdfFile: "/2017.pdf"
     },
     {
       slNo: 3,
@@ -28,7 +30,8 @@ const AboutUs = () => {
       date: "2018",
       language: "En/Kn",
       source: "BDA",
-      download: "Click Here"
+      download: "Click Here",
+      pdfFile: "/2018.pdf"
     },
     {
       slNo: 4,
@@ -36,7 +39,8 @@ const AboutUs = () => {
       date: "21 July 2020",
       language: "En/Kn",
       source: "UDD 91 MNJ 2020 (E)",
-      download: "Click Here"
+      download: "Click Here",
+      pdfFile: "/2020.pdf"
     }
   ];
 
@@ -122,9 +126,13 @@ const AboutUs = () => {
           <Card>
             <CardContent className="p-6">
               <h2 className="text-2xl font-bold text-primary mb-6">Organisation Structure</h2>
-              <p className="text-muted-foreground mb-6">
-                The organizational structure details will be updated soon.
-              </p>
+              <div className="flex justify-center">
+                <img
+                  src="/organization.png"
+                  alt="Organization Structure"
+                  className="rounded-lg shadow-md object-contain w-full h-auto max-h-[600px]"
+                />
+              </div>
             </CardContent>
           </Card>
 
@@ -153,7 +161,12 @@ const AboutUs = () => {
                         <td className="p-3">{item.language}</td>
                         <td className="p-3">{item.source}</td>
                         <td className="p-3">
-                          <Button variant="outline" size="sm" className="flex items-center gap-2">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="flex items-center gap-2"
+                            onClick={() => window.open(item.pdfFile, '_blank')}
+                          >
                             <Download className="h-4 w-4" />
                             {item.download}
                           </Button>
