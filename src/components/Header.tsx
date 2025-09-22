@@ -6,13 +6,17 @@ import LoginModal from "./LoginModal";
 import { useTranslation } from "@/contexts/TranslationContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import RTIDropdown from "./RTIDropdown";
+import { Link } from "react-router-dom";
+import Online from "./online";
+
+
 
 const Header = () => {
   const mainLinks = [
     { label: "ABOUT US", href: "/about-us" },
     { label: "SECTIONS", href: "#sections" },
     { label: "IPGRS", href: "https://ipgrs.karnataka.gov.in/" },
-    { label: "ONLINE SERVICES", href: "/#project" },
+ 
     { label: "ONGOING PROJECTS", href: "/ongoingproject" },
     { label: "PHOTO GALLERY", href: "/photo-gallery" },
     { label: "EODB", href: "/eodb" },
@@ -106,9 +110,14 @@ const Header = () => {
         <div className="container mx-auto flex items-center px-3 md:px-4 py-1.5 md:py-2">
           {/* Left group: Home + Links */}
           <div className="hidden md:flex items-center gap-1">
-            <Button variant="ghost" className="p-2 hover:bg-white/20 text-white rounded-full shadow-lg">
-              <Home className="h-5 w-5" />
-            </Button>
+               <Link to="/">
+      <Button
+        variant="ghost"
+        className="p-2 hover:bg-white/20 text-white rounded-full shadow-lg"
+      >
+        <Home className="h-5 w-5" />
+      </Button>
+      </Link>
             <div className="flex items-center gap-1">
               {mainLinks.map((link) => (
                 <a
@@ -120,6 +129,7 @@ const Header = () => {
                 </a>
               ))}
               <RTIDropdown />
+              <Online />
             </div>
           </div>
 
