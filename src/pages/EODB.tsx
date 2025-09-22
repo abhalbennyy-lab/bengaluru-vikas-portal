@@ -94,7 +94,7 @@ const EODB = () => {
     {
       slNo: 1,
       service: "Possession Certificate for Sites",
-      applicationForm: "#", // No matching file found
+      applicationForm: "https://sevasindhu.karnataka.gov.in/Sevasindhu/Kannada?ReturnUrl=%2F", // No matching file found
       userManual: "/eodb/Seva Sindhu/Usermanual/Possession Certificate for Sites usermanual.pdf",
       abstract: "#", // No matching file found
       applicationDetails: "#" // No matching file found
@@ -102,7 +102,7 @@ const EODB = () => {
     {
       slNo: 2,
       service: "Possession Certificate for Flats",
-      applicationForm: "#", // No matching file found
+      applicationForm: "https://sevasindhu.karnataka.gov.in/Sevasindhu/Kannada?ReturnUrl=%2F", // No matching file found
       userManual: "/eodb/Seva Sindhu/Usermanual/Possession Certificate for Flats.pdf",
       abstract: "#", // No matching file found
       applicationDetails: "#" // No matching file found
@@ -110,7 +110,7 @@ const EODB = () => {
     {
       slNo: 3,
       service: "New e-Khata",
-      applicationForm: "#", // No matching file found
+      applicationForm: "https://sevasindhu.karnataka.gov.in/Sevasindhu/Kannada?ReturnUrl=%2F", // No matching file found
       userManual: "/eodb/Seva Sindhu/Usermanual/New e-Khata.pdf",
       abstract: "#", // No matching file found
       applicationDetails: "#" // No matching file found
@@ -118,7 +118,7 @@ const EODB = () => {
     {
       slNo: 4,
       service: "E-Khata Transfer",
-      applicationForm: "#", // No matching file found
+      applicationForm: "https://sevasindhu.karnataka.gov.in/Sevasindhu/Kannada?ReturnUrl=%2F", // No matching file found
       userManual: "/eodb/Seva Sindhu/Usermanual/E-Khata Transfer.pdf",
       abstract: "#", // No matching file found
       applicationDetails: "#" // No matching file found
@@ -129,7 +129,7 @@ const EODB = () => {
     {
       slNo: 1,
       service: "Property Tax",
-      applicationForm: "#", // No matching file found
+      applicationForm: "https://app.bda.karnataka.gov.in/bdaptax-citizen/login", // No matching file found
       userManual: "/eodb/Property Tax Portal/Property Tax Payment User GuideNew.pdf"
     }
   ];

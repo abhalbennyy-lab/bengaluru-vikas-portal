@@ -10,7 +10,7 @@ const Header = () => {
     { label: "ABOUT US", href: "/about-us" },
     { label: "RTI", href: "#rti" },
     { label: "SECTIONS", href: "#sections" },
-    { label: "IPGRS", href: "#ipgrs" },
+    { label: "IPGRS", href: "https://ipgrs.karnataka.gov.in/" },
     { label: "ONLINE SERVICES", href: "/#project" },
     { label: "ONGOING PROJECTS", href: "/ongoingproject" },
     { label: "PHOTO GALLERY", href: "/photo-gallery" },

@@ -12,6 +12,11 @@ const OnlineServices = () => {
     { id: 5, subject: "Nadaprabhu Kempegowda Layout Block 4 Plan", date: "", language: "English", source: "EM Section" },
     { id: 6, subject: "Nadaprabhu Kempegowda Layout Block 5 Plan", date: "", language: "English", source: "EM Section" },
     { id: 7, subject: "Nadaprabhu Kempegowda Layout Block 6 Plan", date: "", language: "English", source: "EM Section" },
+        { id: 8, subject: "Nadaprabhu Kempegowda Layout Block 7 Plan", date: "", language: "English", source: "EM Section" },
+    { id: 9, subject: "Nadaprabhu Kempegowda Layout Block 8 Plan", date: "", language: "English", source: "EM Section" },
+    { id: 10, subject: "Nadaprabhu Kempegowda Layout Block 9 (Kenchanpura) Plan", date: "", language: "English", source: "EM Section" },
+    { id: 11, subject: "Nadaprabhu Kempegowda Layout Block 9 (Seegehalli) Layout Plan", date: "", language: "English", source: "EM Section" },
+
   ];
 
   const progressReports = [
