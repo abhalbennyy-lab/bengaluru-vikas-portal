@@ -73,12 +73,7 @@ const Header = () => {
             >
               ಕನ್ನಡ
             </Button>
-            <Button 
-              onClick={() => setLoginOpen(true)}
-              className="h-6 px-3 rounded-full text-white text-[11px] font-semibold backdrop-blur-sm bg-white/20 hover:bg-white/30"
-            >
-              Login
-            </Button>
+           
             <Button className="h-6 px-3 rounded-full text-white text-[11px] font-semibold backdrop-blur-sm bg-white/20 hover:bg-white/30">
               Resolve Your Issue
             </Button>
