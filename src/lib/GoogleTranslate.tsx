@@ -3,7 +3,9 @@ import { useEffect, useRef } from 'react';
 declare global {
   interface Window {
     googleTranslateElementInit: () => void;
-    google?: any;
+    google?: {
+      translate?: any;
+    };
   }
 }
 

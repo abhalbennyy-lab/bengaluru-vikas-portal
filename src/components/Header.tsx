@@ -4,14 +4,19 @@ import { Home, Menu, X, Search } from "lucide-react";
 import bdaLogo from "@/assets/bda-logo.png";
 import LoginModal from "./LoginModal";
 import { useTranslation } from "@/contexts/TranslationContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import RTIDropdown from "./RTIDropdown";
+import { Link } from "react-router-dom";
+import Online from "./online";
+
+
 
 const Header = () => {
   const mainLinks = [
     { label: "ABOUT US", href: "/about-us" },
-    { label: "RTI", href: "#rti" },
     { label: "SECTIONS", href: "#sections" },
     { label: "IPGRS", href: "https://ipgrs.karnataka.gov.in/" },
-    { label: "ONLINE SERVICES", href: "/#project" },
+ 
     { label: "ONGOING PROJECTS", href: "/ongoingproject" },
     { label: "PHOTO GALLERY", href: "/photo-gallery" },
     { label: "EODB", href: "/eodb" },
@@ -68,12 +73,7 @@ const Header = () => {
             >
               ಕನ್ನಡ
             </Button>
-            <Button 
-              onClick={() => setLoginOpen(true)}
-              className="h-6 px-3 rounded-full text-white text-[11px] font-semibold backdrop-blur-sm bg-white/20 hover:bg-white/30"
-            >
-              Login
-            </Button>
+           
             <Button className="h-6 px-3 rounded-full text-white text-[11px] font-semibold backdrop-blur-sm bg-white/20 hover:bg-white/30">
               Resolve Your Issue
             </Button>
@@ -105,9 +105,14 @@ const Header = () => {
         <div className="container mx-auto flex items-center px-3 md:px-4 py-1.5 md:py-2">
           {/* Left group: Home + Links */}
           <div className="hidden md:flex items-center gap-1">
-            <Button variant="ghost" className="p-2 hover:bg-white/20 text-white rounded-full shadow-lg">
-              <Home className="h-5 w-5" />
-            </Button>
+               <Link to="/">
+      <Button
+        variant="ghost"
+        className="p-2 hover:bg-white/20 text-white rounded-full shadow-lg"
+      >
+        <Home className="h-5 w-5" />
+      </Button>
+      </Link>
             <div className="flex items-center gap-1">
               {mainLinks.map((link) => (
                 <a
@@ -118,6 +123,8 @@ const Header = () => {
                   {link.label}
                 </a>
               ))}
+              <RTIDropdown />
+              <Online />
             </div>
           </div>
 
