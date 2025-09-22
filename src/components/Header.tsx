@@ -4,11 +4,12 @@ import { Home, Menu, X, Search } from "lucide-react";
 import bdaLogo from "@/assets/bda-logo.png";
 import LoginModal from "./LoginModal";
 import { useTranslation } from "@/contexts/TranslationContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import RTIDropdown from "./RTIDropdown";
 
 const Header = () => {
   const mainLinks = [
     { label: "ABOUT US", href: "/about-us" },
-    { label: "RTI", href: "#rti" },
     { label: "SECTIONS", href: "#sections" },
     { label: "IPGRS", href: "https://ipgrs.karnataka.gov.in/" },
     { label: "ONLINE SERVICES", href: "/#project" },
@@ -118,6 +119,7 @@ const Header = () => {
                   {link.label}
                 </a>
               ))}
+              <RTIDropdown />
             </div>
           </div>
 
