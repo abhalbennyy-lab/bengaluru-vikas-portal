@@ -13,6 +13,7 @@ import Ongoingproject from "./pages/Ongoingproject";
 import NotFound from "./pages/NotFound";
 import NewsList from "./pages/NewsList";
 import NewsDetail from "./pages/NewsDetail";
+import RTI from "./pages/RTI";
 
 import AdminLayout from "./admin/AdminLayout";
 import AdminLogin from "./admin/AdminLogin";
@@ -58,6 +59,7 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/about-us" element={<AboutUs />} />
                 <Route path="/ongoingproject" element={<Ongoingproject />} />
+                <Route path="/rti" element={<RTI />} />
 
                 {/* Admin routes */}
                 <Route path="/admin/login" element={<AdminLogin />} />
