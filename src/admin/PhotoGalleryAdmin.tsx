@@ -6,21 +6,23 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { resolveImageUrl, getGoogleDriveAlternateUrls } from "@/lib/utils";
 import { 
   Image, 
   Plus, 
   Edit, 
   Trash2, 
-  Upload, 
   Eye, 
   Save, 
   X,
   ImageIcon,
   Type,
-  AlignLeft
+  AlignLeft,
+  Link as LinkIcon
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import api from "@/lib/api";
 
 interface PhotoGalleryItem {
   id: string;
@@ -45,64 +47,62 @@ const PhotoGalleryAdmin = () => {
     image: ""
   });
 
-  // Load photos from localStorage
+  // Load photos from backend (GET /content/gallery)
   useEffect(() => {
-    console.log("=== PhotoGalleryAdmin useEffect - Loading photos ===");
-    try {
-      const savedPhotos = localStorage.getItem('photoGallery');
-      console.log("Saved photos from localStorage:", savedPhotos);
-      
-      if (savedPhotos) {
-        const parsedPhotos = JSON.parse(savedPhotos);
-        console.log("Parsed photos:", parsedPhotos);
-        console.log("Photos count:", parsedPhotos.length);
-        setPhotos(parsedPhotos);
-        console.log("✅ Photos loaded successfully");
-      } else {
-        console.log("No saved photos found in localStorage");
+    const load = async () => {
+      console.log("[PhotoGalleryAdmin] GET /content/gallery - loading...");
+      try {
+        const res = await api.get("/content/gallery");
+        console.log("[PhotoGalleryAdmin] GET /content/gallery response", res?.status, res?.data);
+        const doc = res?.data;
+        const arr = (doc?.images || doc?.galleryImages || []);
+        const mapped: PhotoGalleryItem[] = arr.map((g: any) => ({
+          id: g._id || String(Date.now()),
+          image: g.image,
+          heading: g.title || g.heading || "",
+          subheading: g.description || g.subheading || "",
+          createdAt: g.createdAt || new Date().toISOString(),
+          updatedAt: g.updatedAt || new Date().toISOString(),
+        }));
+        setPhotos(mapped);
+      } catch (error: any) {
+        console.error("[PhotoGalleryAdmin] GET /content/gallery error", error?.message, error?.response?.data);
+        toast({ title: "Load failed", description: "Could not load gallery images" });
       }
-    } catch (error) {
-      console.error("❌ Error loading photos from localStorage:", error);
-      console.error("Error details:", {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        localStorageAvailable: typeof localStorage !== 'undefined'
-      });
-    }
-  }, []);
+    };
+    load();
+  }, [toast]);
 
-  // Save photos to localStorage
-  const savePhotos = (updatedPhotos: PhotoGalleryItem[]) => {
-    console.log("=== savePhotos function called ===");
-    console.log("Photos to save:", updatedPhotos);
-    console.log("Photos count:", updatedPhotos.length);
-    
+  // Save photos to backend (PUT /content/gallery)
+  const savePhotos = async (updatedPhotos: PhotoGalleryItem[]) => {
+    console.log("[PhotoGalleryAdmin] PUT /content/gallery - saving...", updatedPhotos);
+    const galleryImages = updatedPhotos.map(p => ({
+      image: p.image,
+      title: p.heading,
+      description: p.subheading,
+    }));
+    console.log("[PhotoGalleryAdmin] Payload to backend (galleryImages):", galleryImages);
     try {
-      const jsonString = JSON.stringify(updatedPhotos);
-      console.log("JSON string length:", jsonString.length);
-      console.log("JSON string preview:", jsonString.substring(0, 200) + "...");
-      
-      localStorage.setItem('photoGallery', jsonString);
-      console.log("✅ Successfully saved to localStorage");
-      
-      setPhotos(updatedPhotos);
-      console.log("✅ Successfully updated photos state");
-      
-      // Verify the save worked
-      const savedData = localStorage.getItem('photoGallery');
-      console.log("Verification - saved data exists:", !!savedData);
-      if (savedData) {
-        const parsedData = JSON.parse(savedData);
-        console.log("Verification - parsed data count:", parsedData.length);
-      }
-      
-    } catch (error) {
-      console.error("❌ Error in savePhotos:", error);
-      console.error("Error details:", {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        updatedPhotosLength: updatedPhotos.length,
-        localStorageAvailable: typeof localStorage !== 'undefined'
-      });
-      throw error; // Re-throw to be caught by handleSubmit
+      const res = await api.put("/content/gallery", { galleryImages });
+      console.log("[PhotoGalleryAdmin] PUT /content/gallery response", res?.status, res?.data);
+      const arr = res?.data?.gallery?.galleryImages || res?.data?.galleryImages || [];
+      const mapped: PhotoGalleryItem[] = arr.map((g: any) => ({
+        id: g._id || String(Math.random()),
+        image: g.image,
+        heading: g.title || "",
+        subheading: g.description || "",
+        createdAt: g.createdAt || new Date().toISOString(),
+        updatedAt: g.updatedAt || new Date().toISOString(),
+      }));
+      setPhotos(mapped);
+      try {
+        window.dispatchEvent(new Event("bvp:gallery:update"));
+      } catch {}
+      toast({ title: "Gallery saved", description: `Items: ${mapped.length}` });
+    } catch (error: any) {
+      console.error("[PhotoGalleryAdmin] PUT /content/gallery error", error?.message, error?.response?.data);
+      toast({ title: "Save failed", description: error?.response?.data?.error || "Could not save gallery", variant: "destructive" });
+      throw error;
     }
   };
 
@@ -114,77 +114,7 @@ const PhotoGalleryAdmin = () => {
     }));
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("=== handleImageUpload called ===");
-    console.log("Event:", e);
-    console.log("Files:", e.target.files);
-    
-    const file = e.target.files?.[0];
-    if (file) {
-      console.log("File selected:", {
-        name: file.name,
-        type: file.type,
-        size: file.size,
-        lastModified: file.lastModified
-      });
-      
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        console.log("❌ Invalid file type:", file.type);
-        toast({
-          title: "Invalid File Type",
-          description: "Please select an image file (JPG, PNG, GIF, etc.)",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        console.log("❌ File too large:", file.size, "bytes");
-        toast({
-          title: "File Too Large",
-          description: "Please select an image smaller than 5MB",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      console.log("✅ File validation passed, starting to read file...");
-      
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        console.log("FileReader onload event:", event);
-        const imageData = event.target?.result as string;
-        console.log("Image data length:", imageData?.length);
-        console.log("Image data preview:", imageData?.substring(0, 100) + "...");
-        
-        setFormData(prev => {
-          const newData = {
-            ...prev,
-            image: imageData
-          };
-          console.log("Updated form data:", newData);
-          return newData;
-        });
-        setPreviewImage(imageData);
-        console.log("✅ Image data set successfully");
-      };
-      
-      reader.onerror = (error) => {
-        console.error("❌ FileReader error:", error);
-        toast({
-          title: "File Read Error",
-          description: "Failed to read the image file. Please try again.",
-          variant: "destructive",
-        });
-      };
-      
-      reader.readAsDataURL(file);
-    } else {
-      console.log("No file selected");
-    }
-  };
+  // Note: Upload removed. Use direct image URL (e.g., Google Drive link) instead.
 
   const resetForm = () => {
     setFormData({
@@ -233,6 +163,13 @@ const PhotoGalleryAdmin = () => {
 
       console.log("✅ Form validation passed");
 
+      // Enforce URL (avoid base64 payloads to backend)
+      if (formData.image.startsWith("data:")) {
+        toast({ title: "Use Image URL", description: "Paste a public image URL (e.g., Google Drive)", variant: "destructive" });
+        setIsLoading(false);
+        return;
+      }
+
       const now = new Date().toISOString();
       console.log("Current timestamp:", now);
 
@@ -253,7 +190,7 @@ const PhotoGalleryAdmin = () => {
         );
         
         console.log("Updated photos array:", updatedPhotos);
-        savePhotos(updatedPhotos);
+        await savePhotos(updatedPhotos);
 
         toast({
           title: "Photo Updated",
@@ -266,7 +203,7 @@ const PhotoGalleryAdmin = () => {
         
         // Add new photo
         const newPhoto: PhotoGalleryItem = {
-          id: Date.now().toString(),
+          id: (typeof crypto !== 'undefined' && 'randomUUID' in crypto) ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2,8)}`,
           heading: formData.heading.trim(),
           subheading: formData.subheading.trim(),
           image: formData.image,
@@ -279,7 +216,7 @@ const PhotoGalleryAdmin = () => {
         const updatedPhotos = [...photos, newPhoto];
         console.log("Updated photos array with new photo:", updatedPhotos);
         
-        savePhotos(updatedPhotos);
+        await savePhotos(updatedPhotos);
 
         toast({
           title: "Photo Added",
@@ -370,7 +307,7 @@ const PhotoGalleryAdmin = () => {
               Add New Photo
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 {editingPhoto ? (
@@ -385,52 +322,54 @@ const PhotoGalleryAdmin = () => {
                   </>
                 )}
               </DialogTitle>
+              <DialogDescription className="sr-only" id="photo-gallery-admin-desc">
+                Add or edit a photo gallery item by pasting a public image URL and providing heading details.
+              </DialogDescription>
             </DialogHeader>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Image Upload */}
+              {/* Image URL */}
               <div className="space-y-2">
-                <Label htmlFor="image">Photo</Label>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <Input
-                      id="image"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="flex-1"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => document.getElementById('image')?.click()}
-                      className="flex items-center gap-2"
-                    >
-                      <Upload className="w-4 h-4" />
-                      Upload
-                    </Button>
+                <Label htmlFor="image" className="flex items-center gap-2"><LinkIcon className="w-4 h-4" /> Image URL</Label>
+                <Input
+                  id="image"
+                  name="image"
+                  type="url"
+                  placeholder="Paste public image URL (Google Drive link supported)"
+                  value={formData.image}
+                  onChange={handleInputChange}
+                  required
+                />
+                {formData.image && (
+                  <div className="relative">
+                    {(() => {
+                      const previewSrc = resolveImageUrl(formData.image);
+                      return (
+                        <img
+                          src={previewSrc}
+                      alt="Preview"
+                      className="w-full h-48 object-cover rounded-lg border"
+                          referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            const el = e.currentTarget as HTMLImageElement;
+                            console.warn("[PhotoGalleryAdmin] preview onError", el.src);
+                            const candidates = getGoogleDriveAlternateUrls(formData.image);
+                            const currentIndex = candidates.indexOf(el.src);
+                            const next = candidates[currentIndex + 1] || candidates[0];
+                            if (next && next !== el.src) {
+                              console.log("[PhotoGalleryAdmin] preview trying next candidate", next);
+                              el.src = next;
+                            }
+                          }}
+                          onLoad={(e) => {
+                            const el = e.currentTarget as HTMLImageElement;
+                            console.log("[PhotoGalleryAdmin] preview onLoad", el.src);
+                          }}
+                        />
+                      );
+                    })()}
                   </div>
-                  
-                  {previewImage && (
-                    <div className="relative">
-                      <img
-                        src={previewImage}
-                        alt="Preview"
-                        className="w-full h-48 object-cover rounded-lg border"
-                      />
-                      <div className="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex items-center justify-center">
-                        <div className="text-center text-white p-4">
-                          <div className="text-lg font-semibold mb-2">
-                            {formData.heading || "Your Heading"}
-                          </div>
-                          <div className="text-sm opacity-90">
-                            {formData.subheading || "Your Subheading"}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
 
               {/* Heading */}
@@ -521,13 +460,29 @@ const PhotoGalleryAdmin = () => {
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {photos.map((photo) => (
-            <Card key={photo.id} className="overflow-hidden">
+          {photos.map((photo, index) => (
+            <Card key={photo.id || `${index}-${photo.image}`} className="overflow-hidden">
               <div className="relative">
                 <img
-                  src={photo.image}
+                  src={resolveImageUrl(photo.image)}
                   alt={photo.heading}
                   className="w-full h-48 object-cover"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    console.warn("[PhotoGalleryAdmin] grid image onError", el.src);
+                    const candidates = getGoogleDriveAlternateUrls(photo.image);
+                    const currentIndex = candidates.indexOf(el.src);
+                    const next = candidates[currentIndex + 1] || candidates[0];
+                    if (next && next !== el.src) {
+                      console.log("[PhotoGalleryAdmin] grid trying next candidate", next);
+                      el.src = next;
+                    }
+                  }}
+                  onLoad={(e) => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    console.log("[PhotoGalleryAdmin] grid image onLoad", el.src);
+                  }}
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                   <div className="text-center text-white p-4">

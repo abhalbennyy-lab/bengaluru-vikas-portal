@@ -41,14 +41,7 @@ const AdminLayout = () => {
           >
             Update Banner
           </NavLink>
-          <NavLink
-            to="/admin/gallery"
-            className={({ isActive }) =>
-              `block px-3 py-2 rounded-md text-sm ${isActive ? "bg-muted font-medium" : "hover:bg-muted"}`
-            }
-          >
-            Gallery
-          </NavLink>
+          
 
           <NavLink
             to="/admin/news"

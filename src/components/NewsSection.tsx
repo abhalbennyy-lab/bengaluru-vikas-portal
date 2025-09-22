@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight } from "lucide-react";
+import { resolveImageUrl, getGoogleDriveAlternateUrls } from "@/lib/utils";
+import api from "@/lib/api";
+import { Link } from "react-router-dom";
 import img1 from "@/assets/other/DJI_20250823171339_0049_D.jpg";
 import img2 from "@/assets/other/WhatsApp Image 2025-09-18 at 2.03.03 PM.jpeg";
 import hebbalFlyover from "@/assets/other/Hebbal Flyover - Top Down.jpg";
@@ -19,104 +22,56 @@ const NewsSection = () => {
     createdAt?: number;
   };
   const STORAGE_KEY = "bvp.news.items";
-  const defaultItems: NewsItem[] = [
-    {
-      title: "Varthur Lake Rejuvenation",
-      description:
-        "The Bangalore Development Authority (BDA) has taken up the rejuvenation of Varthur Lake, one of the city’s largest and most important water bodies, with the aim of restoring its ecological balance and transforming it into a vibrant public space...",
-      category: "Environmental Project",
-      imageUrl: img1,
-      month: "Mar",
-      year: 2024,
-    },
-    {
-      title: "Alur BDA Flats & Villas Project",
-      description:
-        "The Bangalore Development Authority (BDA) is developing the Alur Flats & Villas Project at Dasanapura, designed to provide affordable, well-planned, and high-quality housing options...",
-      category: "Housing Project",
-      imageUrl: img2,
-      month: "Apr",
-      year: 2024,
-    },
-    {
-      title: "Hebbal Flyover Loop",
-      description:
-        "The Bangalore Development Authority (BDA) has completed and inaugurated the Hebbal Flyover Loop, a 700-metre elevated ramp constructed at a cost of ₹80 crore...",
-      category: "Infrastructure Project",
-      imageUrl: hebbalFlyover,
-      month: "Aug",
-      year: 2025,
-    },
-  ];
 
-  const getNews = (): NewsItem[] => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      const parsedRaw = raw ? (JSON.parse(raw) as any[]) : [];
-      
-      // Normalize records from storage (handle legacy shapes)
-      const normalized: NewsItem[] = parsedRaw
-        .map((n) => {
-          const imageUrl = n.imageUrl ?? n.image ?? "";
-          let month = n.month ?? "";
-          let year: number = typeof n.year === "number" ? n.year : Number(n.year);
-          if (!month && typeof n.date === "string") {
-            const parts = n.date.split(/\s+/); // e.g., "Mar 2024"
-            if (parts.length >= 2) {
-              month = parts[0];
-              const parsedYear = Number(parts[1]);
-              if (!isNaN(parsedYear)) year = parsedYear;
-            }
-          }
-          return {
-            id: n.id ?? undefined,
-            title: n.title ?? "",
-            description: n.description ?? "",
-            category: n.category ?? n.type ?? "",
-            imageUrl,
-            month,
-            year: isNaN(year) ? new Date().getFullYear() : year,
-            createdAt: n.createdAt ?? Date.now(),
-          } as NewsItem;
-        })
-        .filter((n) => n.title && n.description && n.category && n.imageUrl && n.month && n.year);
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
 
-      // Sort newest first by createdAt
-      normalized.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
-
-      // Show newly added items first, then fall back to seeded defaults
-      if (normalized.length > 0) {
-        return normalized.slice(0, 6);
-      }
-      return defaultItems.slice(0, 6);
-    } catch (error) {
-      return defaultItems.slice(0, 6);
-    }
-  };
-  const [newsItems, setNewsItems] = useState<NewsItem[]>(getNews());
-
-  // Live update when admin changes news or storage changes in another tab
+  // Fetch from backend and live update when admin changes
   useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const res = await api.get("/content/news");
+        const items = Array.isArray(res?.data?.newsItems) ? res.data.newsItems : [];
+        const mapped: NewsItem[] = items.map((n: any, idx: number) => ({
+          id: n._id || `${idx}-${n.title}`,
+          title: n.title,
+          description: n.description,
+          category: n.category,
+          imageUrl: resolveImageUrl(n.imageUrl || n.image),
+          month: n.month,
+          year: typeof n.year === 'number' ? n.year : Number(n.year),
+          createdAt: Date.now(),
+        })).filter(n => n.title && n.description && n.category && n.imageUrl && n.month && n.year);
+        // newest first by year/month rough order, then take top 3
+        mapped.reverse();
+        setNewsItems(mapped.slice(0, 3));
+      } catch (e) {
+        console.warn("[NewsSection] Failed to fetch /content/news, falling back to localStorage");
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          const parsedRaw = raw ? (JSON.parse(raw) as any[]) : [];
+          const normalized: NewsItem[] = parsedRaw.map((n, idx) => ({
+            id: n.id || `${idx}-${n.title}`,
+            title: n.title,
+            description: n.description,
+            category: n.category || n.type,
+            imageUrl: resolveImageUrl(n.imageUrl || n.image),
+            month: n.month,
+            year: typeof n.year === 'number' ? n.year : Number(n.year),
+            createdAt: n.createdAt || Date.now(),
+          })).filter(n => n.title && n.description && n.category && n.imageUrl && n.month && n.year);
+          normalized.reverse();
+          setNewsItems(normalized.slice(0, 3));
+        } catch {}
+      }
+    };
+
     const handler = () => {
       console.log("[NewsSection] Custom event received, refreshing news");
-      setNewsItems(getNews());
-    };
-    const storageHandler = (e: StorageEvent) => {
-      if (e.key === STORAGE_KEY) {
-        console.log("[NewsSection] Storage event received, refreshing news");
-        setNewsItems(getNews());
-      }
+      fetchNews();
     };
     window.addEventListener("bvp:news:update", handler);
-    window.addEventListener("storage", storageHandler);
-    
-    // Also refresh on component mount
-    setNewsItems(getNews());
-    
-    return () => {
-      window.removeEventListener("bvp:news:update", handler);
-      window.removeEventListener("storage", storageHandler);
-    };
+    fetchNews();
+    return () => window.removeEventListener("bvp:news:update", handler);
   }, []);
 
 
@@ -136,18 +91,35 @@ const NewsSection = () => {
               <p className="text-gray-500">No news items found. Check console for debug info.</p>
             </div>
           ) : (
-            newsItems.map((item, index) => (
+            newsItems.map((item, index) => {
+              const imgSrc = resolveImageUrl(item.imageUrl);
+              console.log("[NewsSection] card", { id: item.id, title: item.title });
+              return (
             <Card key={index} className="bg-white/90 backdrop-blur ring-1 ring-black/5 hover:shadow-lg transition-shadow cursor-pointer rounded-xl overflow-hidden">
               <div className="aspect-video relative overflow-hidden">
                 <img
-                  src={item.imageUrl}
+                  src={imgSrc}
                   alt={item.title}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   onError={(e) => {
                     const el = e.currentTarget as HTMLImageElement;
+                    console.warn("[NewsSection] image onError", { src: el.src, title: item.title });
+                    const candidates = getGoogleDriveAlternateUrls(item.imageUrl);
+                    const currentIndex = candidates.indexOf(el.src);
+                    const next = candidates[currentIndex + 1] || candidates[0];
+                    if (next && next !== el.src && !el.src.endsWith("/placeholder.svg")) {
+                      console.log("[NewsSection] trying next candidate", next);
+                      el.src = next;
+                      return;
+                    }
                     if (el.src.endsWith("/placeholder.svg")) return;
                     el.src = "/placeholder.svg";
                   }}
+                  onLoad={(e) => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    console.log("[NewsSection] image onLoad", { src: el.src, title: item.title });
+                  }}
+                  referrerPolicy="no-referrer"
                 />
                 <div className="absolute top-3 left-3 bg-black/50 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
                   <Calendar className="h-3.5 w-3.5" /> {item.month} {item.year}
@@ -169,14 +141,14 @@ const NewsSection = () => {
                 </CardDescription>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">{item.month} {item.year}</span>
-                  <Button variant="ghost" className="p-0 h-auto text-primary hover:text-primary/80 font-medium" onClick={() => window.location.assign(`/news/${item.id ?? index}`)}>
-                    Read More
-                    <ArrowRight className="h-4 w-4 ml-1" />
-                  </Button>
+                  <Link to={`/news/${item.id}`} onClick={() => console.log('[NewsSection] navigate detail', { id: item.id })} className="inline-flex items-center gap-1 text-primary hover:text-primary/80 font-medium">
+                    Read More <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </div>
               </CardContent>
             </Card>
-            ))
+            );
+            })
           )}
         </div>
 

@@ -16,6 +16,8 @@ import {
   List
 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import api from "@/lib/api";
+import { resolveImageUrl, getGoogleDriveAlternateUrls } from "@/lib/utils";
 
 interface PhotoGalleryItem {
   id: string;
@@ -120,32 +122,50 @@ const PhotoGallery = () => {
     }
   ];
 
-  // Load photos
+  // Load photos from backend (GET /content/gallery)
   useEffect(() => {
-    const loadPhotos = () => {
+    const loadPhotos = async () => {
+      setIsLoading(true);
       try {
-        // Try to load from localStorage first
-        const savedPhotos = localStorage.getItem('photoGallery');
-        if (savedPhotos) {
-          const parsedPhotos = JSON.parse(savedPhotos);
-          setPhotos(parsedPhotos);
-          setFilteredPhotos(parsedPhotos);
-        } else {
-          // If no saved photos, use sample photos
+        console.log("[PhotoGalleryPage] GET /content/gallery - loading...");
+        const res = await api.get("/content/gallery");
+        console.log("[PhotoGalleryPage] GET /content/gallery response", res?.status, res?.data);
+        const arr = res?.data?.galleryImages || res?.data?.images || [];
+        const mapped: PhotoGalleryItem[] = arr.map((g: any, idx: number) => ({
+          id: g._id || `${idx}-${g.image}`,
+          image: resolveImageUrl(g.image),
+          heading: g.title || g.heading || "",
+          subheading: g.description || g.subheading || "",
+          createdAt: g.createdAt || new Date().toISOString(),
+          updatedAt: g.updatedAt || new Date().toISOString(),
+        }));
+        setPhotos(mapped);
+        setFilteredPhotos(mapped);
+      } catch (error) {
+        console.error("[PhotoGalleryPage] GET /content/gallery error", error);
+        // Fallback to localStorage, then sample
+        try {
+          const savedPhotos = localStorage.getItem('photoGallery');
+          if (savedPhotos) {
+            const parsedPhotos = JSON.parse(savedPhotos);
+            setPhotos(parsedPhotos);
+            setFilteredPhotos(parsedPhotos);
+          } else {
+            setPhotos(samplePhotos);
+            setFilteredPhotos(samplePhotos);
+          }
+        } catch {
           setPhotos(samplePhotos);
           setFilteredPhotos(samplePhotos);
         }
-      } catch (error) {
-        console.error('Error loading photos:', error);
-        // Fallback to sample photos
-        setPhotos(samplePhotos);
-        setFilteredPhotos(samplePhotos);
       } finally {
         setIsLoading(false);
       }
     };
-
     loadPhotos();
+    const handler = () => loadPhotos();
+    window.addEventListener("bvp:gallery:update", handler);
+    return () => window.removeEventListener("bvp:gallery:update", handler);
   }, []);
 
   // Filter photos based on search term
@@ -294,6 +314,22 @@ const PhotoGallery = () => {
                           src={photo.image}
                           alt={photo.heading}
                           className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                          referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            const el = e.currentTarget as HTMLImageElement;
+                            console.warn("[PhotoGalleryPage] image onError", { src: el.src, heading: photo.heading });
+                            const candidates = getGoogleDriveAlternateUrls(photo.image);
+                            const currentIndex = candidates.indexOf(el.src);
+                            const next = candidates[currentIndex + 1] || candidates[0];
+                            if (next && next !== el.src) {
+                              console.log("[PhotoGalleryPage] trying next candidate", next);
+                              el.src = next;
+                            }
+                          }}
+                          onLoad={(e) => {
+                            const el = e.currentTarget as HTMLImageElement;
+                            console.log("[PhotoGalleryPage] image onLoad", { src: el.src, heading: photo.heading });
+                          }}
                         />
                         
                         {/* Overlay with heading and subheading */}
@@ -335,6 +371,22 @@ const PhotoGallery = () => {
                           src={photo.image}
                           alt={photo.heading}
                           className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
+                          referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            const el = e.currentTarget as HTMLImageElement;
+                            console.warn("[PhotoGalleryPage] list image onError", { src: el.src, heading: photo.heading });
+                            const candidates = getGoogleDriveAlternateUrls(photo.image);
+                            const currentIndex = candidates.indexOf(el.src);
+                            const next = candidates[currentIndex + 1] || candidates[0];
+                            if (next && next !== el.src) {
+                              console.log("[PhotoGalleryPage] list trying next candidate", next);
+                              el.src = next;
+                            }
+                          }}
+                          onLoad={(e) => {
+                            const el = e.currentTarget as HTMLImageElement;
+                            console.log("[PhotoGalleryPage] list image onLoad", { src: el.src, heading: photo.heading });
+                          }}
                         />
                         <div className="flex-1 min-w-0">
                           <h3 className="font-semibold text-lg mb-2">{photo.heading}</h3>
@@ -377,6 +429,22 @@ const PhotoGallery = () => {
                   src={selectedPhoto.image}
                   alt={selectedPhoto.heading}
                   className="w-full h-96 object-cover rounded-lg"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    console.warn("[PhotoGalleryPage] modal image onError", { src: el.src, heading: selectedPhoto.heading });
+                    const candidates = getGoogleDriveAlternateUrls(selectedPhoto.image);
+                    const currentIndex = candidates.indexOf(el.src);
+                    const next = candidates[currentIndex + 1] || candidates[0];
+                    if (next && next !== el.src) {
+                      console.log("[PhotoGalleryPage] modal trying next candidate", next);
+                      el.src = next;
+                    }
+                  }}
+                  onLoad={(e) => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    console.log("[PhotoGalleryPage] modal image onLoad", { src: el.src, heading: selectedPhoto.heading });
+                  }}
                 />
                 
                 {/* Navigation buttons */}

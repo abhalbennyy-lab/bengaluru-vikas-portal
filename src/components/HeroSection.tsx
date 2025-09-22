@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-
-import banner4 from "@/assets/WhatsApp Image 2025-09-19 at 10.23.04 AM (1).jpeg";
-import banner5 from "@/assets/WhatsApp Image 2025-09-19 at 10.23.04 AM.jpeg";
+import api from "@/lib/api";
+import { resolveImageUrl, getGoogleDriveAlternateUrls } from "@/lib/utils";
 
 type HeroSlide = {
   imageUrl: string;
@@ -14,28 +12,7 @@ type HeroSlide = {
 const STORAGE_KEY = "bvp.hero.slides";
 
 const HeroSection = () => {
-  const getSlides = () => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw) as HeroSlide[];
-        const valid = parsed.filter((s) => s.imageUrl && s.imageUrl.trim() !== "");
-        if (valid.length > 0) {
-          return valid.map((s) => ({
-            image: s.imageUrl,
-            title: s.title ?? "",
-            subtitle: s.subtitle ?? "",
-          }));
-        }
-      }
-    } catch {}
-    return [
-      { image: banner4, title: "", subtitle: "" },
-      { image: banner5, title: "", subtitle: "" },
-    ];
-  };
-
-  const [slides, setSlides] = useState(getSlides);
+  const [slides, setSlides] = useState<{ image: string; title?: string; subtitle?: string }[]>([]);
 
   const [current, setCurrent] = useState(0);
 
@@ -55,16 +32,52 @@ const HeroSection = () => {
   }, [slides.length, current]);
 
   useEffect(() => {
-    const handler = () => setSlides(getSlides());
-    const storageHandler = (e: StorageEvent) => {
-      if (e.key === STORAGE_KEY) setSlides(getSlides());
+    const fetchBanner = async () => {
+      try {
+        // Primary: all-content provides banner array
+        const res = await api.get("/content/all-content");
+        const banner: string[] = res?.data?.banner || [];
+        if (Array.isArray(banner) && banner.length > 0) {
+          console.log("[HeroSection] Fetched banner images:", banner);
+          const mapped = banner.map((url) => {
+            const resolved = resolveImageUrl(url);
+            console.log("[HeroSection] resolve banner image", { original: url, resolved });
+            return { image: resolved };
+          });
+          setSlides(mapped);
+          return;
+        }
+        // Fallback: gallery endpoint (new shape returns galleryImages objects)
+        const res2 = await api.get("/content/gallery");
+        const galleryImages: any[] = res2?.data?.galleryImages || [];
+        if (Array.isArray(galleryImages) && galleryImages.length > 0) {
+          const urls = galleryImages.map((g) => g.image).filter(Boolean);
+          console.log("[HeroSection] Fallback gallery images:", urls);
+          const mapped = urls.map((url: string) => ({ image: resolveImageUrl(url) }));
+          setSlides(mapped);
+          return;
+        }
+      } catch (e) {
+        // ignore and try localStorage
+      }
+      // fallback to localStorage for any legacy data
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw) as HeroSlide[];
+          const valid = parsed.filter((s) => s.imageUrl && s.imageUrl.trim() !== "");
+          if (valid.length > 0) {
+            const mapped = valid.map((s) => ({ image: resolveImageUrl(s.imageUrl), title: s.title ?? "", subtitle: s.subtitle ?? "" }));
+            setSlides(mapped);
+          }
+        }
+      } catch {}
     };
+    fetchBanner();
+
+    const handler = () => fetchBanner();
     window.addEventListener("bvp:hero:update", handler);
-    window.addEventListener("storage", storageHandler);
-    return () => {
-      window.removeEventListener("bvp:hero:update", handler);
-      window.removeEventListener("storage", storageHandler);
-    };
+    return () => window.removeEventListener("bvp:hero:update", handler);
   }, []);
 
   const goPrev = () => {
@@ -94,6 +107,22 @@ const HeroSection = () => {
               alt={`slide-${index}`}
               className="w-full h-full object-cover object-center selection:bg-transparent select-none"
               draggable={false}
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                const el = e.currentTarget as HTMLImageElement;
+                console.warn("[HeroSection] image onError", { index, src: el.src });
+                const candidates = getGoogleDriveAlternateUrls(slide.image);
+                const currentIndex = candidates.indexOf(el.src);
+                const next = candidates[currentIndex + 1] || candidates[0];
+                if (next && next !== el.src) {
+                  console.log("[HeroSection] trying next candidate", next);
+                  el.src = next;
+                }
+              }}
+              onLoad={(e) => {
+                const el = e.currentTarget as HTMLImageElement;
+                console.log("[HeroSection] image onLoad", { index, src: el.src });
+              }}
             />
 
             {/* Optional overlay if you want dark effect */}

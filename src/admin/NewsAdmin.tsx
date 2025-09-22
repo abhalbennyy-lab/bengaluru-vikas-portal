@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { resolveImageUrl, getGoogleDriveAlternateUrls } from "@/lib/utils";
+import api from "@/lib/api";
 
 type NewsItem = {
   id: string;
@@ -44,6 +46,7 @@ const NewsAdmin = () => {
       return DEFAULT_ITEMS;
     }
   });
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Save to localStorage whenever items change
   useEffect(() => {
@@ -57,37 +60,77 @@ const NewsAdmin = () => {
     }
   }, [items]);
 
-  const addNews = () => {
+  const addNews = async () => {
     const yr = parseInt(year, 10);
     if (!title.trim() || !description.trim() || !category.trim() || !imageUrl.trim() || !month.trim() || isNaN(yr)) {
+      console.warn("[NewsAdmin] Validation failed", {
+        title,
+        description,
+        category,
+        imageUrl,
+        month,
+        year,
+        parsedYear: yr,
+      });
       toast({ title: "Missing fields", description: "Please fill all fields correctly." });
       return;
     }
 
-    const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    const item: NewsItem = {
-      id,
+    const payloadItem = {
       title: title.trim(),
       description: description.trim(),
       category: category.trim(),
-      imageUrl: imageUrl.trim(), // stores Google Drive or external link
+      imageUrl: imageUrl.trim(),
       month: month.trim(),
       year: yr,
-      createdAt: Date.now(),
     };
-    console.log("[NewsAdmin] Adding news item:", item);
-    setItems((prev) => {
-      const newItems = [item, ...prev];
-      console.log("[NewsAdmin] Updated items array:", newItems);
-      return newItems;
-    });
-    setTitle("");
-    setDescription("");
-    setCategory("");
-    setImageUrl("");
-    setMonth("");
-    setYear("");
-    toast({ title: "News added", description: item.title });
+
+    try {
+      setIsSubmitting(true);
+      const requestBody = { newsItems: [payloadItem] };
+      console.log("[NewsAdmin] Submitting news to backend", {
+        url: "/content/news",
+        body: requestBody,
+      });
+      const response = await api.put("/content/news", requestBody);
+      console.log("[NewsAdmin] Backend response", {
+        status: response?.status,
+        data: response?.data,
+      });
+
+      const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      const item: NewsItem = {
+        id,
+        ...payloadItem,
+        createdAt: Date.now(),
+      };
+
+      setItems((prev) => [item, ...prev]);
+
+      setTitle("");
+      setDescription("");
+      setCategory("");
+      setImageUrl("");
+      setMonth("");
+      setYear("");
+
+      toast({ title: "News added", description: item.title });
+    } catch (error: any) {
+      console.error("[NewsAdmin] Error posting news:", error);
+      console.log("[NewsAdmin] Error details", {
+        message: error?.message,
+        status: error?.response?.status,
+        statusText: error?.response?.statusText,
+        data: error?.response?.data,
+        url: error?.config?.url,
+        method: error?.config?.method,
+        requestBody: error?.config?.data,
+      });
+      const message = error?.response?.data?.message || error?.message || "Failed to add news. Please try again.";
+      toast({ title: "Error", description: message });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const removeNews = (id: string) => {
@@ -146,9 +189,32 @@ const NewsAdmin = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {items.length === 0 && <div className="text-sm text-muted-foreground">No news added yet.</div>}
-            {items.map((n) => (
+            {items.map((n) => {
+              const imgSrc = resolveImageUrl(n.imageUrl);
+              console.log("[NewsAdmin] preview image", { original: n.imageUrl, resolved: imgSrc, title: n.title });
+              return (
               <div key={n.id} className="rounded-md border p-3 flex gap-3">
-                <img src={n.imageUrl} alt={n.title} className="w-28 h-20 object-cover rounded" />
+                <img
+                  src={imgSrc}
+                  alt={n.title}
+                  className="w-28 h-20 object-cover rounded"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    console.warn("[NewsAdmin] image onError", { src: el.src, title: n.title });
+                    const candidates = getGoogleDriveAlternateUrls(n.imageUrl);
+                    const currentIndex = candidates.indexOf(el.src);
+                    const next = candidates[currentIndex + 1] || candidates[0];
+                    if (next && next !== el.src && !el.src.endsWith("/placeholder.svg")) {
+                      console.log("[NewsAdmin] trying next candidate", next);
+                      el.src = next;
+                    }
+                  }}
+                  onLoad={(e) => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    console.log("[NewsAdmin] image onLoad", { src: el.src, title: n.title });
+                  }}
+                />
                 <div className="min-w-0 flex-1">
                   <div className="text-sm font-medium truncate">{n.title}</div>
                   <div className="text-xs text-muted-foreground truncate">
@@ -162,7 +228,8 @@ const NewsAdmin = () => {
                   </Button>
                 </div>
               </div>
-            ))}
+            );
+            })}
           </div>
         </CardContent>
       </Card>

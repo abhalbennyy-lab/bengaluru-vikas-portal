@@ -13,6 +13,7 @@ import Ongoingproject from "./pages/Ongoingproject";
 import NotFound from "./pages/NotFound";
 import NewsList from "./pages/NewsList";
 import NewsDetail from "./pages/NewsDetail";
+import NewsArticle from "./pages/NewsArticle";
 
 import AdminLayout from "./admin/AdminLayout";
 import AdminLogin from "./admin/AdminLogin";
@@ -51,7 +52,7 @@ function App() {
                 {/* Public routes */}
                 <Route path="/" element={<Index />} />
                 <Route path="/news" element={<NewsList />} />
-                <Route path="/news/:id" element={<NewsDetail />} />
+                <Route path="/news/:id" element={<NewsArticle />} />
                 <Route path="/photo-gallery" element={<PhotoGallery />} />
                 <Route path="/brand-bengaluru" element={<BrandBengaluru />} />
                 <Route path="/eodb" element={<EODB />} />

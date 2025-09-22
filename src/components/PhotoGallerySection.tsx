@@ -11,6 +11,8 @@ import {
   Eye
 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import api from "@/lib/api";
+import { resolveImageUrl, getGoogleDriveAlternateUrls } from "@/lib/utils";
 
 interface PhotoGalleryItem {
   id: string;
@@ -40,23 +42,35 @@ const PhotoGallerySection = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Load photos from localStorage
+  // Load photos from backend (GET /content/gallery)
   useEffect(() => {
-    const loadPhotos = () => {
+    const loadPhotos = async () => {
+      setIsLoading(true);
       try {
-        const savedPhotos = localStorage.getItem('photoGallery');
-        if (savedPhotos) {
-          const parsedPhotos = JSON.parse(savedPhotos);
-          setPhotos(parsedPhotos.slice(0, maxItems));
-        }
+        console.log("[PhotoGallerySection] GET /content/gallery - loading...");
+        const res = await api.get("/content/gallery");
+        console.log("[PhotoGallerySection] GET /content/gallery response", res?.status, res?.data);
+        const arr = res?.data?.galleryImages || res?.data?.images || [];
+        const mapped: PhotoGalleryItem[] = arr.map((g: any, idx: number) => ({
+          id: g._id || `${idx}-${g.image}`,
+          image: resolveImageUrl(g.image),
+          heading: g.title || g.heading || "",
+          subheading: g.description || g.subheading || "",
+          createdAt: g.createdAt || new Date().toISOString(),
+          updatedAt: g.updatedAt || new Date().toISOString(),
+        }));
+        setPhotos(mapped.slice(0, maxItems));
       } catch (error) {
-        console.error('Error loading photos:', error);
+        console.error("[PhotoGallerySection] GET /content/gallery error", error);
+        setPhotos([]);
       } finally {
         setIsLoading(false);
       }
     };
-
     loadPhotos();
+    const handler = () => loadPhotos();
+    window.addEventListener("bvp:gallery:update", handler);
+    return () => window.removeEventListener("bvp:gallery:update", handler);
   }, [maxItems]);
 
   const handlePhotoClick = (photo: PhotoGalleryItem, index: number) => {
@@ -141,6 +155,23 @@ const PhotoGallerySection = ({
                     src={photo.image}
                     alt={photo.heading}
                     className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      const el = e.currentTarget as HTMLImageElement;
+                      console.warn("[PhotoGallerySection] image onError", { src: el.src, heading: photo.heading });
+                      const candidates = getGoogleDriveAlternateUrls(photo.image);
+                      const currentIndex = candidates.indexOf(el.src);
+                      const next = candidates[currentIndex + 1] || candidates[0];
+                      if (next && next !== el.src) {
+                        console.log("[PhotoGallerySection] trying next candidate", next);
+                        el.src = next;
+                        return;
+                      }
+                    }}
+                    onLoad={(e) => {
+                      const el = e.currentTarget as HTMLImageElement;
+                      console.log("[PhotoGallerySection] image onLoad", { src: el.src, heading: photo.heading });
+                    }}
+                    referrerPolicy="no-referrer"
                   />
                   
                   {/* Overlay with heading and subheading */}
@@ -205,6 +236,22 @@ const PhotoGallerySection = ({
                   src={selectedPhoto.image}
                   alt={selectedPhoto.heading}
                   className="w-full h-96 object-cover rounded-lg"
+                  onError={(e) => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    console.warn("[PhotoGallerySection] modal image onError", { src: el.src, heading: selectedPhoto.heading });
+                    const candidates = getGoogleDriveAlternateUrls(selectedPhoto.image);
+                    const currentIndex = candidates.indexOf(el.src);
+                    const next = candidates[currentIndex + 1] || candidates[0];
+                    if (next && next !== el.src) {
+                      console.log("[PhotoGallerySection] modal trying next candidate", next);
+                      el.src = next;
+                    }
+                  }}
+                  onLoad={(e) => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    console.log("[PhotoGallerySection] modal image onLoad", { src: el.src, heading: selectedPhoto.heading });
+                  }}
+                  referrerPolicy="no-referrer"
                 />
                 
                 {/* Navigation buttons */}

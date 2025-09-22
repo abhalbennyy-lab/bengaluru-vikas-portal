@@ -4,8 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import banner4 from "@/assets/WhatsApp Image 2025-09-19 at 10.23.04 AM (1).jpeg";
-import banner5 from "@/assets/WhatsApp Image 2025-09-19 at 10.23.04 AM.jpeg";
+import { useToast } from "@/components/ui/use-toast";
+import api from "@/lib/api";
+import { resolveImageUrl, getGoogleDriveAlternateUrls } from "@/lib/utils";
 
 type HeroSlide = {
   imageUrl: string;
@@ -15,12 +16,10 @@ type HeroSlide = {
 
 const STORAGE_KEY = "bvp.hero.slides";
 
-const defaultSlides: HeroSlide[] = [
-  { imageUrl: banner4, title: "", subtitle: "" },
-  { imageUrl: banner5, title: "", subtitle: "" },
-];
+const defaultSlides: HeroSlide[] = [];
 
 const HeroAdmin = () => {
+  const { toast } = useToast();
   const [slides, setSlides] = useState<HeroSlide[]>(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -63,6 +62,38 @@ const HeroAdmin = () => {
 
   const validCount = useMemo(() => slides.filter((s) => s.imageUrl.trim() !== "").length, [slides]);
 
+  // Load banner images from backend (GET /content/all-content -> banner array)
+  useEffect(() => {
+    const load = async () => {
+      try {
+        console.log("[HeroAdmin] GET /content/all-content - loading banner images...");
+        const res = await api.get("/content/all-content");
+        console.log("[HeroAdmin] GET /content/all-content response", res?.status, res?.data);
+        const images: string[] = res?.data?.banner || [];
+        if (Array.isArray(images) && images.length > 0) {
+          setSlides(images.map((url) => ({ imageUrl: url, title: "", subtitle: "" })));
+          toast({ title: "Banner loaded", description: `${images.length} image(s)` });
+        }
+      } catch (error: any) {
+        console.error("[HeroAdmin] GET /content/all-content error", error?.message, error?.response?.data);
+      }
+    };
+    load();
+  }, [toast]);
+
+  const saveToBackend = async () => {
+    try {
+      const images = slides.map((s) => s.imageUrl.trim()).filter(Boolean);
+      console.log("[HeroAdmin] PUT /content/banner - saving images", images);
+      const res = await api.put("/content/banner", { images });
+      console.log("[HeroAdmin] PUT /content/banner response", res?.status, res?.data);
+      toast({ title: "Banner saved", description: `${images.length} image(s)` });
+    } catch (error: any) {
+      console.error("[HeroAdmin] PUT /content/banner error", error?.message, error?.response?.data);
+      toast({ title: "Save failed", description: error?.response?.data?.message || "Could not save banner", variant: "destructive" });
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-4 sm:p-6">
       <div className="mb-4">
@@ -74,6 +105,7 @@ const HeroAdmin = () => {
         <div className="flex gap-2">
           <Button onClick={() => setSlides(defaultSlides)} variant="secondary">Restore defaults</Button>
           <Button onClick={addSlide} variant="default">Add slide</Button>
+          <Button onClick={saveToBackend} variant="default">Save to backend</Button>
         </div>
       </div>
 
@@ -126,7 +158,28 @@ const HeroAdmin = () => {
               {slide.imageUrl && (
                 <div className="mt-4">
                   <div className="relative aspect-video w-full overflow-hidden rounded-md border">
-                    <img src={slide.imageUrl} className="w-full h-full object-cover" alt="preview" />
+                    <img
+                      src={resolveImageUrl(slide.imageUrl)}
+                      className="w-full h-full object-cover"
+                      alt="preview"
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        const el = e.currentTarget as HTMLImageElement;
+                        console.warn("[HeroAdmin] preview image onError", el.src);
+                        const candidates = getGoogleDriveAlternateUrls(slide.imageUrl);
+                        const currentIndex = candidates.indexOf(el.src);
+                        const next = candidates[currentIndex + 1] || candidates[0];
+                        if (next && next !== el.src) {
+                          console.log("[HeroAdmin] trying next candidate", next);
+                          el.src = next;
+                          return;
+                        }
+                      }}
+                      onLoad={(e) => {
+                        const el = e.currentTarget as HTMLImageElement;
+                        console.log("[HeroAdmin] preview image onLoad", el.src);
+                      }}
+                    />
                     {(slide.title || slide.subtitle) && (
                       <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/20 to-black/45" />
                     )}
