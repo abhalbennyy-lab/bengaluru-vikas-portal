@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import api from "../lib/api"
+import { useEffect } from "react";
 export default function LoginOtp() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -9,6 +10,20 @@ export default function LoginOtp() {
   const [otp, setOtp] = useState("");
   const [showOtp, setShowOtp] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+
+    useEffect(() => {
+    const checkIfLoggedIn = async () => {
+      try {
+        const res = await api.get("/check");
+        if (res.data.authenticated) {
+          navigate("/admin", { replace: true }); // already logged in → go to admin layout
+        }
+      } catch (err) {
+        // Not logged in, stay on login page
+      }
+    };
+    checkIfLoggedIn();
+  }, [navigate]);
 
   // Handle login
   const handleLogin = async (e: React.FormEvent) => {

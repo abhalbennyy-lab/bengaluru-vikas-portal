@@ -30,6 +30,8 @@ import { TranslationProvider } from "./contexts/TranslationContext";
 import "./index.css";
 import { useDataStore } from './store/store';
 import { useEffect } from "react";
+import ProtectedRoute from "./components/protect";
+
 
 const queryClient = new QueryClient();
 
@@ -61,10 +63,18 @@ function App() {
                 <Route path="/about-us" element={<AboutUs />} />
                 <Route path="/ongoingproject" element={<Ongoingproject />} />
                 <Route path="/rti" element={<RTI />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
 
                 {/* Admin routes */}
-                <Route path="/admin/login" element={<AdminLogin />} />
-                <Route path="/admin" element={<AdminLayout />}>
+                
+                  <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute>
+                      <AdminLayout />
+                    </ProtectedRoute>
+                  }
+                >
                   <Route path="banner" element={<HeroAdmin />} />
                   <Route path="sub-admins" element={<SubAdmins />} />
                   <Route path="super-email" element={<SuperAdminEmail />} />

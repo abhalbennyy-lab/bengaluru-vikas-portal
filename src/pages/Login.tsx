@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import api from "../lib/api"
+import { useEffect } from "react";
 export default function LoginOtp() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -11,6 +12,8 @@ export default function LoginOtp() {
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   // Handle login
+
+  
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!captchaToken) {
