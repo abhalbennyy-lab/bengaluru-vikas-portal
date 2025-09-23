@@ -13,11 +13,8 @@ import Ongoingproject from "./pages/Ongoingproject";
 import NotFound from "./pages/NotFound";
 import NewsList from "./pages/NewsList";
 import NewsDetail from "./pages/NewsDetail";
-<<<<<<< HEAD
 import NewsArticle from "./pages/NewsArticle";
-=======
 import RTI from "./pages/RTI";
->>>>>>> 1621732f2c2cbc5afdb00557063c2024f0658e43
 
 import AdminLayout from "./admin/AdminLayout";
 import AdminLogin from "./admin/AdminLogin";
